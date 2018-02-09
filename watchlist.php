@@ -1,3 +1,16 @@
+<?php
+session_start();
+$_SESSION['message'] = '';
+$serverName = "tcp:ragnasvr.database.windows.net, 1433";
+$connectionOptions = array(
+    "Database" => "ragnaDB",
+    "Uid" => "ragnarok@ragnasvr",
+    "PWD" => "Korangar2"
+);
+//Establishes the connection
+$conn = sqlsrv_connect($serverName, $connectionOptions);
+?>
+
 <!DOCTYPE html>
 <html>
   <head>
