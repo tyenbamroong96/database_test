@@ -92,10 +92,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $logged_in = $_SESSION['logged_in'];
     // echo $logged_in;
     if ($logged_in == TRUE) {
-      // echo "true";
+        echo $logged_in;
         include 'header_member.php';
     } else {
-      // echo "false";
+        echo $logged_in;
         include 'header.php';
     }
     ?>
