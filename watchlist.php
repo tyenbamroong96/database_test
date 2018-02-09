@@ -47,7 +47,6 @@
         include 'header_member.php';
     } else {
       echo $logged_in;
-        include 'header.php';
     }
     ?>
     <div class="col-md-12">
