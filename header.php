@@ -15,10 +15,6 @@
       <nav class="navbar navbar-inverse navigation-bar">
         <div class="container-fluid nav-content">
           <ul class="nav navbar-nav">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Reviews</a></li>
-            <li><a href="#">Watch Brands</a>
-            <li><a href="#">FAQ</a></li>
           </ul>
 
           <!-- Create and Account -->
