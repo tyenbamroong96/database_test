@@ -9,41 +9,6 @@ $connectionOptions = array(
 );
 //Establishes the connection
 $conn = sqlsrv_connect($serverName, $connectionOptions);
-
-
-
-//the form has been submitted with post
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    $tsql= "SELECT Email, Password FROM auctionUsers.users;";
-    $getResults= sqlsrv_query($conn, $tsql);
-    // echo ("Reading data from table" . PHP_EOL);
-    if ($getResults == FALSE)
-        die(FormatErrors(sqlsrv_errors()));
-    // while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
-    //     echo ($row['Email'] . " " . $row['Password'] . PHP_EOL);
-
-    // }
-    $pswd = md5($_POST['password']);
-    $email = $_POST['email'];
-    // printf($password . " " . $email);
-
-    $query = "SELECT * FROM auctionUsers.users WHERE Email = '$email' AND Password = '$pswd'";
-    $getMatches= sqlsrv_query($conn, $query);
-
-    if($getMatches){
-    $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
-    if($row){
-      header("Location: welcome.php");
-      sqlsrv_free_stmt($getResults);
-      exit;
-    }
-
-    }
-    else {
-      echo "Incorrect Password or Username";
-    }
-  }
 ?>
 
 <!DOCTYPE html>
