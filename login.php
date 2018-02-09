@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <body>
     <!-- include header -->
-    <?php include 'header.php'; ?>
+    <?php include 'header_member.php'; ?>
     <div style="padding: 70px 0;">
       <div class="login-card" >
         <h1>Log-in</h1><br>
