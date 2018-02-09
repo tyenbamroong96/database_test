@@ -36,7 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       $_SESSION['firstname'] = $row['FirstName'];
       header("Location: home.php");
       sqlsrv_free_stmt($getResults);
-      exit;
     }
 
     }
