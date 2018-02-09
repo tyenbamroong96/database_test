@@ -32,7 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if($getMatches){
     $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
     if($row){
-      $_SESSION['logged_in'] = true;
+      $_SESSION['logged_in'] = TRUE;
+      $_SESSION['firstname'] = $row['FirstName'];
       header("Location: home.php");
       sqlsrv_free_stmt($getResults);
       exit;
@@ -126,7 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   <body>
     <!-- include header -->
-    <?php include 'header_member.php'; ?>
+    <?php include 'header.php'; ?>
     <div style="padding: 70px 0;">
       <div class="login-card" >
         <h1>Log-in</h1><br>

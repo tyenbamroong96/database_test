@@ -89,9 +89,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- Including header based on user loggin status -->
     <!-- To include this section at the beginning of every file's body -->
     <?php
-    $logged_in = $_SESSION["logged_in"];
+    $logged_in = $_SESSION['logged_in'];
     // echo $logged_in;
-    if ($logged_in == true) {
+    if ($logged_in == TRUE) {
       // echo "true";
         include 'header_member.php';
     } else {
