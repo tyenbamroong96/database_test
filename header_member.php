@@ -52,7 +52,7 @@
                       function(result) {
                         if (result) {
                           //Destroy session before logging out
-                          <? session_destroy() ?>
+                          <?php session_destroy() ?>
                           window.location.href="home.php";
                         }
                       });

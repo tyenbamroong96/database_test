@@ -41,7 +41,7 @@
     <!-- Including header based on user loggin status -->
     <!-- To include this section at the beginning of every file's body -->
     <?php
-    $logged_in = $_SESSION["logged_in"];
+    $logged_in = $_SESSION['logged_in'];
     if ($logged_in == TRUE) {
         include 'header_member.php';
     } else {
