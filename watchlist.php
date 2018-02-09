@@ -42,11 +42,11 @@
     <!-- To include this section at the beginning of every file's body -->
     <?php
     $logged_in = $_SESSION['logged_in'];
+    // echo $logged_in;
     if ($logged_in == TRUE) {
-      echo $logged_in;
         include 'header_member.php';
     } else {
-      echo $logged_in;
+        include 'header.php';
     }
     ?>
     <div class="col-md-12">
