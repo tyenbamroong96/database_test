@@ -36,7 +36,7 @@
             </li>
           </ul>
 
-          <!-- Search bar
+          <!-- Search bar -->
           <form class="navbar-form navbar-right">
             <div class="input-group">
               <input type="text" class="form-control" placeholder="Search">
@@ -46,7 +46,7 @@
                 </button>
               </div>
             </div>
-          </form> -->
+          </form>
         </div>
       </nav>
     </div>
