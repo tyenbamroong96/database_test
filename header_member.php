@@ -29,24 +29,13 @@
           <!-- Create and Log out -->
           <ul class="nav navbar-nav navbar-right">
             <li><a href="watchlist.php"><span class="glyphicon glyphicon-heart"></span> Watchlist</a></li>
-            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href=""><i class="fa fa-fw fa-user"></i> <?= $_SESSION["firstname"] . ' ' . substr($this->session->lastName, 0, 1) . '.' ?> <span class="caret"></span></a>
+            <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href=""><i class="fa fa-fw fa-user"></i> <?= $_SESSION["firstname"]; ?> <span class="caret"></span></a>
               <ul class="dropdown-menu user">
                 <li id="logout" style="float: right;" onclick="logout()"><a href="javascript:void(0)">Log out</a></li>
               </ul>
             </li>
           </ul>
 
-          <!-- Search bar -->
-          <form class="navbar-form navbar-right">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search">
-              <div class="input-group-btn">
-                <button class="btn btn-default" type="submit">
-                  <i class="glyphicon glyphicon-search"></i>
-                </button>
-              </div>
-            </div>
-          </form>
         </div>
       </nav>
     </div>
