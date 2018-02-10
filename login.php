@@ -32,10 +32,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if($getMatches){
     $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
     if($row){
-      $_SESSION['logged_in'] = TRUE;
-      $_SESSION['firstname'] = $row['FirstName'];
+      $_SESSION['logged_in'] = true;
       header("Location: home.php");
       sqlsrv_free_stmt($getResults);
+      exit;
     }
 
     }
