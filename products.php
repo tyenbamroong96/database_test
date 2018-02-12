@@ -80,7 +80,7 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
     <?php
     $logged_in = $_SESSION['logged_in_val'];
     if ($logged_in == false) {
-      header( 'Location: deny.php' ) ;
+      header( 'Location: deny_access.php' ) ;
     }
     ?>
 
