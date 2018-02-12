@@ -24,7 +24,7 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
 // }
 ?>
 
-<!-- 
+<!--
 <html>
 <nav class="navbar navbar-expand-sm bg-light navbar-light">
   <ul class="navbar-nav">
@@ -47,7 +47,7 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
     <div class="welcome">
         <div class="alert alert-success"><?= $_SESSION['message'] ?></div>
         Welcome <span class="user"><?= $_SESSION['username'] ?></span>
-        
+
 
     </div>
 </div>
@@ -77,6 +77,12 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
   </head>
 
   <body id="page-top">
+    <?php
+    $logged_in = $_SESSION['logged_in_val'];
+    if ($logged_in == false) {
+      header( 'Location: deny.php' ) ;
+    }
+    ?>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -106,10 +112,10 @@ Welcome <span class="user"><?= $_SESSION['firstname'] ?></span>
 </section>
 
 
-    
-    
+
+
     <!-- Footer -->
-    
+
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
