@@ -77,6 +77,12 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
   </head>
 
   <body id="page-top">
+    <?php
+    $logged_in = $_SESSION['logged_in_val'];
+    if ($logged_in == false) {
+      header( 'Location: deny_access.php' ) ;
+    }
+    ?>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
