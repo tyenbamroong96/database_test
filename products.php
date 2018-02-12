@@ -24,7 +24,7 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
 // }
 ?>
 
-<!--
+<!-- 
 <html>
 <nav class="navbar navbar-expand-sm bg-light navbar-light">
   <ul class="navbar-nav">
@@ -47,7 +47,7 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
     <div class="welcome">
         <div class="alert alert-success"><?= $_SESSION['message'] ?></div>
         Welcome <span class="user"><?= $_SESSION['username'] ?></span>
-
+        
 
     </div>
 </div>
@@ -88,9 +88,9 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#">Watchlist</a>
+              <a class="nav-link js-scroll-trigger" href="watchlist.php">Watchlist</a>
             </li>
-            <li class="nav-item">
+<li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="products.php">Products</a>
             </li>
             <li class="nav-item">
@@ -102,13 +102,14 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
     </nav>
 
 <section>
-Welcome HERREE <span class="user"><?= $_SESSION['firstname'] ?></span>
+Welcome <span class="user"><?= $_SESSION['firstname'] ?></span>
 </section>
 
 
-
+    
+    
     <!-- Footer -->
-
+    
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
