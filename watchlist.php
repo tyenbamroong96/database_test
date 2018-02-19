@@ -17,14 +17,87 @@ $connectionOptions = array(
 //Establishes the connection
 $conn = sqlsrv_connect($serverName, $connectionOptions);
 
-// function redirect()
-// {
-//    header('Location: watchlist.php');
-//    die();
-// }
+
+$current_user_id = $_SESSION['user_id'];
+
+// $tsql= "SELECT * FROM auction.watch_list WHERE user_id = '$current_user_id'";
+$tsql = "SELECT * FROM auction.product_searches AS auc
+WHERE auc.ebayID IN (SELECT ebayID FROM auction.watch_list WHERE user_id = '$current_user_id')";
+$getResults= sqlsrv_query($conn, $tsql, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
+if ($getResults == FALSE)
+    die(FormatErrors(sqlsrv_errors()));
+
+// $row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC);
+$num_of_rows = sqlsrv_num_rows($getResults);
+// echo "<br><br><br>num of rows: " . $num_of_rows;
+if($num_of_rows > 0)
+{
+
+
+
+echo "
+<br><br><br><br><br>
+<table border='1' align='center'>
+<tr>
+<th>Title</th>
+<th>Price</th>
+<th>Service Cost</th>
+<th>ebayID</th>
+<th>Remove Item</th>
+</tr>";
+
+// $row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC);
+
+// while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+//     echo ($row['title'] . " " . $row['price'] . " " . $row['serviceCost'] . " " . $row['ebayID'] . PHP_EOL); 
+//   }
+
+
+while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
+
+  $product_link = $row['product_link'];
+  $title = $row['title'];
+  $ebayidval = $row['ebayID'];
+  echo "<tr>";
+  echo "<td>" . "<a href=\"$product_link\" target=\"_blank\">$title</a>" . "</td>";
+  echo "<td>" . $row['price'] . "</td>";
+  echo "<td>" . $row['serviceCost'] . "</td>";
+  echo "<td>" . $row['ebayID'] . "</td>";
+  echo "<td>" . "<form id= \"delete_item\" method=\"post\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"delete_item\" onclick=\"return confirm('Remove item?');\" value=\"$ebayidval\">Remove Item</button></form> </td>";
+  echo "</tr>";
+
+  }
+
+echo "</table>"; 
+}
+
+else{
+  echo "<br><br><br><br><br>
+  <p align='center'>Go to the products page to start adding items to your watchlist!</p>";
+}
+
+
+
+if (isset($_POST['delete_item'])){
+  $my_ebay_id = $_POST['delete_item'];
+  $current_user_id = $_SESSION['user_id'];
+
+  $tsql= "DELETE FROM auction.watch_list WHERE ebayID = '$my_ebay_id' AND user_id = '$current_user_id'";
+  $getResults= sqlsrv_query($conn, $tsql);
+
+  $rowsAffected = sqlsrv_rows_affected($getResults);
+  if ($getResults == FALSE or $rowsAffected == FALSE)
+      die(FormatErrors(sqlsrv_errors()));
+  echo "<meta http-equiv='refresh' content='0'>";
+
+
+
+}
+
+
 ?>
 
-<!--
+<!-- 
 <html>
 <nav class="navbar navbar-expand-sm bg-light navbar-light">
   <ul class="navbar-nav">
@@ -47,7 +120,7 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
     <div class="welcome">
         <div class="alert alert-success"><?= $_SESSION['message'] ?></div>
         Welcome <span class="user"><?= $_SESSION['username'] ?></span>
-
+        
 
     </div>
 </div>
@@ -77,24 +150,18 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
   </head>
 
   <body id="page-top">
-    <?php
-    $logged_in = $_SESSION['logged_in_val'];
-    if ($logged_in == false) {
-      header( 'Location: deny_access.php' ) ;
-    }
-    ?>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
       <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="#page-top">W A T C H</a>
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">A U C T O R A</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#">Watchlist</a>
+              <a class="nav-link js-scroll-trigger" href="#">My Watchlist</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="products.php">Products</a>
@@ -107,14 +174,14 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
       </div>
     </nav>
 
-<section>
+<!-- <section>
 Welcome HERREE <span class="user"><?= $_SESSION['firstname'] ?></span>
-</section>
+</section> -->
 
-
-
+    
+    
     <!-- Footer -->
-
+    
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>

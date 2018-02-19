@@ -17,7 +17,7 @@ $conn = sqlsrv_connect($serverName, $connectionOptions);
 //the form has been submitted with post
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $tsql= "SELECT Email, Password FROM auctionUsers.users;";
+    $tsql= "SELECT Email, Password FROM auction.users;";
     $getResults= sqlsrv_query($conn, $tsql);
     // echo ("Reading data from table" . PHP_EOL);
     if ($getResults == FALSE)
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     // printf($password . " " . $email);
 
-    $query = "SELECT * FROM auctionUsers.users WHERE Email = '$email' AND Password = '$pswd'";
+    $query = "SELECT * FROM auction.users WHERE Email = '$email' AND Password = '$pswd'";
     $getMatches= sqlsrv_query($conn, $query);
 
     $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
@@ -38,6 +38,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // $_SESSION['logged_in'] = true;
       $_SESSION['logged_in_val'] = true;
       $_SESSION['firstname'] = $row['FirstName'];
+      $_SESSION['user_id'] = $row['Email'];
       header("Location: products.php");
       sqlsrv_free_stmt($getResults);
       exit;

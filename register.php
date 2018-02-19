@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = $_POST['email'];
         $password = md5($_POST['password']); //md5 has password for security
 
-        $query = "SELECT * FROM auctionUsers.users WHERE Email = '$email'";
+        $query = "SELECT * FROM auction.users WHERE Email = '$email'";
         $getMatches= sqlsrv_query($conn, $query);
 
         $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
@@ -34,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       else
       {
         // echo ("Inserting a new row into table" . PHP_EOL);
-        $tsql= "INSERT INTO auctionUsers.users (Email, Password, FirstName, LastName) VALUES (?,?,?,?);";
-        $params = array($email,$password,$first_name,$last_name);
+        $tsql= "INSERT INTO auction.users (FirstName, LastName, Email, Password) VALUES (?,?,?,?);";
+        $params = array($first_name, $last_name, $email, $password);
         $getResults= sqlsrv_query($conn, $tsql, $params);
         $rowsAffected = sqlsrv_rows_affected($getResults);
         if ($getResults == FALSE or $rowsAffected == FALSE)
