@@ -597,7 +597,6 @@ if(isset($_POST['Query']))
         } else {
           $curr = "$priceCurr / $shipCurr";  // potential case where price/ship currencies differ
         }
-
         $timeLeft = getPrettyTimeFromEbayTime($item->sellingStatus->timeLeft);
         //$endTime = strtotime($item->listingInfo->endTime);   // returns Epoch seconds
         $endTime = $item->listingInfo->endTime;
