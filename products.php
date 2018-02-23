@@ -115,15 +115,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../../twitter-bootstrap/twitter-bootstrap-v2/docs/assets/css/bootstrap.css" rel="stylesheet">
 <script src="./js/jQuery.js"></script>
 <script src="./js/jQueryUI/ui.tablesorter.js"></script>
-<script src="./jquery/jquery-3.3.1.min.js"></script>
-<script src="./jquery/flipclock/flipclock.min.js"></script>
-
-<script>
-  var clock = $('.clock').FlipClock(3600 * 24 * 10, {
-    clockFace: 'DailyCounter',
-    countdown: true
-  });
-</script>
 
 <script>
   $(document).ready(function() {
@@ -146,6 +137,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
   </head>
+
+  <body id="page-top">
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
@@ -321,7 +314,7 @@ if(isset($_POST['Query']))
 
     $current_uid = $_SESSION['user_id'];
     $gend_for_filters = str_replace ("'s","",$gend);
-    $query = "SELECT * FROM auction.filters
+    $query = "SELECT * FROM auction.filters 
     WHERE brand = '$brand' AND min_price = '$min' AND max_price = '$max'
     AND display ='$disp' AND condition = '$cond' AND year_manufacture = '$year' AND gender = '$gend_for_filters' AND user_id = '$current_uid' ";
     $getMatches= sqlsrv_query($conn, $query);
@@ -330,7 +323,7 @@ if(isset($_POST['Query']))
     // echo "HERE -> " . $row;
 
     if(!$row){
-
+      
       $tsql2= "INSERT INTO auction.filters (brand, min_price, max_price, display, condition, gender, year_manufacture, user_id) VALUES (?,?,?,?,?,?,?,?);";
       $params2 = array($brand,$min,$max,$disp,$cond,$gend_for_filters,$year,$current_uid);
       $getResults2= sqlsrv_query($conn, $tsql2, $params2);
@@ -343,7 +336,7 @@ if(isset($_POST['Query']))
     }
 
 
-
+      
 
   $results .= 'Click <a href="#Low-Range">here</a> to see Low-Range.'. "<br />\n";
   $results .= 'Click <a href="#Mid-Range">here</a> to see Mid-Range.'. "<br />\n";
@@ -637,11 +630,11 @@ if(isset($_POST['Query']))
           // Free the connection
 
         //  @odbc_close($conn);
-
         $results .= "<tr><td>$count</td><td><a href=\"$link\"><img src=\"$picURL\"></a></td><td> <a href=\"$link\">$title</a></br></br>     <button type=\"button\" class=\"btn btn-warning\" onclick=\"location.href = '$link';\">Buy/Bid</button> &nbsp;&nbsp;      <iframe name=\"votar\" style=\"display:none;\"></iframe>  <form id= \"add_to_watchlist\" target=\"votar\" method=\"post\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"add_to_watchlist\" onclick=\"return confirm('Want to add item?');\" value=\"$sqlEbayItemID\">Add to Watchlist</button></form>           </br></br>      $subtitle </br></br> $sellingState </br></br> $bids</br></br> $condition</br></br>$conditionInfo</br></br> </br> $ebayItemId</br></br> $display</br><td >$location</td>"
              .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td>$timeLeft</td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td></tr>";
             $count++;
       }// each item
+
 
     //if resp more than 0
     // If there was no response, print an error
@@ -701,6 +694,7 @@ if(isset($_POST['Query']))
 
 
 
+
     <!-- Footer -->
 
 
@@ -713,8 +707,6 @@ if(isset($_POST['Query']))
 
     <!-- Custom JavaScript for this theme -->
     <script src="js/scrolling-nav.js"></script>
-
-
 
   </body>
 
