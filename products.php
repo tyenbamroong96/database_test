@@ -115,6 +115,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../../twitter-bootstrap/twitter-bootstrap-v2/docs/assets/css/bootstrap.css" rel="stylesheet">
 <script src="./js/jQuery.js"></script>
 <script src="./js/jQueryUI/ui.tablesorter.js"></script>
+<script src="./jquery/jquery-3.3.1.min.js"></script>
+<script src="./jquery/flipclock/flipclock.min.js"></script>
+
+<script>
+  var clock = $('.clock').FlipClock(3600 * 24 * 10, {
+    clockFace: 'DailyCounter',
+    countdown: true
+  });
+</script>
 
 <script>
   $(document).ready(function() {
@@ -139,6 +148,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </head>
 
   <body id="page-top">
+    <div class="clock"></div>
 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
