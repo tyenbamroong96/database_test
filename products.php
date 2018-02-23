@@ -147,9 +147,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
   </head>
 
-  <body id="page-top">
-    <div class="clock"></div>
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
       <div class="container">
@@ -665,38 +662,6 @@ if(isset($_POST['Query']))
 
 
 ?>
-
-<script>
-  var countDownDate = new Date("").getTime();
-
-  var x = setInterval(function() {
-    var timeleft = document.getElementById("demo").innerHTML = timeleft;
-  }, 1000);
-</script>
-
-<script>
-  $(function(){
-    $('#login_form').submit(function(event) {
-      var form = $(this);
-      event.preventDefault();
-      $.ajax({
-        type: "POST",
-        url: "<?= base_url('Validation') ?>",
-        data: form.serialize(),
-        success: function(data){
-            if (data == 1) {
-              window.location.href="<?= base_url('Account/log_in') ?>";
-            } else {
-              $('#hidden_text').removeClass('hidden')
-            }
-        },
-        error: function() { alert("Error posting feed."); }
-      });
-
-      });
-    });
-</script>
-
 
 
 
