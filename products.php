@@ -173,7 +173,7 @@ $GlobalID = $_POST["GlobalID"];
 $Display = $_POST["Display"];
 $Condition = $_POST["Condition"];
 $Gender = $_POST["Gender"];
-$Year_Manu = $_POST["Year_Manu"];
+//$Year_Manu = $_POST["Year_Manu"];
 ?>
 
 <br>
@@ -232,7 +232,7 @@ $Year_Manu = $_POST["Year_Manu"];
   <tr><th>Display</th>
      <th>Condition</th>
      <th>Gender</th>
-     <th>Year of Manufacture</th>
+     <!-- <th>Year of Manufacture</th> -->
   </tr>
   <tr> <td align="center"> <select name="Display">
 
@@ -250,20 +250,7 @@ $Year_Manu = $_POST["Year_Manu"];
         <option value="Unisex" <?php if (isset($Gender) && $Gender=="Unisex") echo "selected";?>>Unisex </option>
         <option value="Children" <?php if (isset($Gender) && $Gender=="Children") echo "selected";?>>Children</option>
       </select></td>
-      <td align="center"> <select name="Year_Manu">
-        <option value="2010-Now" <?php if (isset($Year_Manu) && $Year_Manu=="2010-Now") echo "selected";?>>2010-Now</option>
-        <option value="2000-2009" <?php if (isset($Year_Manu) && $Year_Manu=="2000-2009") echo "selected";?>>2000-2009</option>
-        <option value="1990-1999" <?php if (isset($Year_Manu) && $Year_Manu=="1990-1999") echo "selected";?>>1990-1999</option>
-        <option value="1980-1989" <?php if (isset($Year_Manu) && $Year_Manu=="1980-1989") echo "selected";?>>1980-1989</option>
-        <option value="1970-1979" <?php if (isset($Year_Manu) && $Year_Manu=="1970-1979") echo "selected";?>>1970-1979</option>
-        <option value="1960-1969" <?php if (isset($Year_Manu) && $Year_Manu=="1960-1969") echo "selected";?>>1960-1969</option>
-        <option value="1950-1959" <?php if (isset($Year_Manu) && $Year_Manu=="1950-1959") echo "selected";?>>1950-1959</option>
-        <option value="1940-1949" <?php if (isset($Year_Manu) && $Year_Manu=="1940-1949") echo "selected";?>>1940-1949</option>
-        <option value="1930-1939" <?php if (isset($Year_Manu) && $Year_Manu=="1930-1939") echo "selected";?>>1930-1939 </option>
-        <option value="1920-1929" <?php if (isset($Year_Manu) && $Year_Manu=="1920-1929") echo "selected";?>>1920-1929 </option>
-        <option value="Pre-1920" <?php if (isset($Year_Manu) && $Year_Manu=="Pre-1920") echo "selected";?>>Pre-1920</option>
-        <option value="Not specified" <?php if (isset($Year_Manu) && $Year_Manu=="Not specified") echo "selected";?>>Not specified</option>
-      </select></td>
+
 
     </tr>
 </table>
@@ -297,7 +284,7 @@ if(isset($_POST['Query']))
   $disp  = $_POST['Display'];
   $cond  = $_POST['Condition'];
   $gend  = $_POST['Gender'];
-  $year  = $_POST['Year_Manu'];
+  //$year  = $_POST['Year_Manu'];
   $priceRangeMin = $_POST['MinPrice'];
   $priceRangeMax = $_POST['MaxPrice'];
   $min = $_POST['MinPrice'];
@@ -314,18 +301,18 @@ if(isset($_POST['Query']))
 
     $current_uid = $_SESSION['user_id'];
     $gend_for_filters = str_replace ("'s","",$gend);
-    $query = "SELECT * FROM auction.filters 
+    $query = "SELECT * FROM auction.filters
     WHERE brand = '$brand' AND min_price = '$min' AND max_price = '$max'
-    AND display ='$disp' AND condition = '$cond' AND year_manufacture = '$year' AND gender = '$gend_for_filters' AND user_id = '$current_uid' ";
+    AND display ='$disp' AND condition = '$cond' AND gender = '$gend_for_filters' AND user_id = '$current_uid' ";
     $getMatches= sqlsrv_query($conn, $query);
 
     $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
     // echo "HERE -> " . $row;
 
     if(!$row){
-      
-      $tsql2= "INSERT INTO auction.filters (brand, min_price, max_price, display, condition, gender, year_manufacture, user_id) VALUES (?,?,?,?,?,?,?,?);";
-      $params2 = array($brand,$min,$max,$disp,$cond,$gend_for_filters,$year,$current_uid);
+
+      $tsql2= "INSERT INTO auction.filters (brand, min_price, max_price, display, condition, gender, user_id) VALUES (?,?,?,?,?,?,?);";
+      $params2 = array($brand,$min,$max,$disp,$cond,$gend_for_filters,$current_uid);
       $getResults2= sqlsrv_query($conn, $tsql2, $params2);
       $rowsAffected2 = sqlsrv_rows_affected($getResults2);
       if ($getResults2 == FALSE or $rowsAffected2 == FALSE){
@@ -336,7 +323,7 @@ if(isset($_POST['Query']))
     }
 
 
-      
+
 
   $results .= 'Click <a href="#Low-Range">here</a> to see Low-Range.'. "<br />\n";
   $results .= 'Click <a href="#Mid-Range">here</a> to see Mid-Range.'. "<br />\n";
@@ -395,8 +382,8 @@ if(isset($_POST['Query']))
          . "&aspectFilter(0).aspectValueName=$disp"
          . "&aspectFilter(1).aspectName=Gender"
          . "&aspectFilter(1).aspectValueName=$gend"
-         . "&aspectFilter(2).aspectName=Year of Manufacture"
-         . "&aspectFilter(2).aspectValueName=$year"
+         // . "&aspectFilter(2).aspectName=Year of Manufacture"
+         // . "&aspectFilter(2).aspectValueName=$year"
 
         // . "&aspectFilter(1).aspectName=Brand"
         // . "&aspectFilter(1).aspectValueName=$company"
@@ -450,8 +437,8 @@ if(isset($_POST['Query']))
          . "&aspectFilter(0).aspectValueName=$disp"
          . "&aspectFilter(1).aspectName=Gender"
          . "&aspectFilter(1).aspectValueName=$gend"
-         . "&aspectFilter(2).aspectName=Year of Manufacture"
-         . "&aspectFilter(2).aspectValueName=$year"
+         // . "&aspectFilter(2).aspectName=Year of Manufacture"
+         // . "&aspectFilter(2).aspectValueName=$year"
         // . "&aspectFilter(1).aspectName=Brand"
         // . "&aspectFilter(1).aspectValueName=$company"
         // . "&aspectFilter(2).aspectName=Condition"
@@ -485,6 +472,8 @@ if(isset($_POST['Query']))
         } else {
           $picURL = "http://pics.ebaystatic.com/aw/pics/express/icons/iconPlaceholder_96x96.gif";
         }
+        $image = (string) $picURL;
+
         $link  = $item->viewItemURL;
         $title = $item->title;
         $sellingState = sprintf("Selling Status: %s",(string) $item->sellingStatus->sellingState);
@@ -581,9 +570,9 @@ if(isset($_POST['Query']))
         $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
         //check for duplication
         if(!$row){
-        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link) VALUES (?,?,?,?,?);";
+        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image) VALUES (?,?,?,?,?,?);";
         // $user_id = $_SESSION['user_id'];
-        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink);
+        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image);
         $getResults= sqlsrv_query($conn, $tsql, $params);
         $rowsAffected = sqlsrv_rows_affected($getResults);
         if ($getResults == FALSE or $rowsAffected == FALSE)
