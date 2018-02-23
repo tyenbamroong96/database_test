@@ -148,8 +148,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </head>
 
   <body id="page-top">
-    <div class="clock"></div>
-
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
       <div class="container">
@@ -185,6 +183,9 @@ $Condition = $_POST["Condition"];
 $Gender = $_POST["Gender"];
 //$Year_Manu = $_POST["Year_Manu"];
 ?>
+
+<div class="clock"></div>
+
 
 <br>
 <br>
