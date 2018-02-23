@@ -39,6 +39,7 @@ echo "
 <br><br><br><br><br>
 <table border='1' align='center'>
 <tr>
+<th>Image</th>
 <th>Title</th>
 <th>Price</th>
 <th>Service Cost</th>
@@ -49,7 +50,7 @@ echo "
 // $row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC);
 
 // while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
-//     echo ($row['title'] . " " . $row['price'] . " " . $row['serviceCost'] . " " . $row['ebayID'] . PHP_EOL); 
+//     echo ($row['title'] . " " . $row['price'] . " " . $row['serviceCost'] . " " . $row['ebayID'] . PHP_EOL);
 //   }
 
 
@@ -58,7 +59,10 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
   $product_link = $row['product_link'];
   $title = $row['title'];
   $ebayidval = $row['ebayID'];
+  $img_src = $row['image'];
   echo "<tr>";
+
+  echo "<td>" . "<a href=\"$product_link\"><img src=\"$img_src\"></a>" . "</td>";
   echo "<td>" . "<a href=\"$product_link\" target=\"_blank\">$title</a>" . "</td>";
   echo "<td>" . $row['price'] . "</td>";
   echo "<td>" . $row['serviceCost'] . "</td>";
@@ -68,7 +72,7 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 
   }
 
-echo "</table>"; 
+echo "</table>";
 }
 
 else{
@@ -97,7 +101,7 @@ if (isset($_POST['delete_item'])){
 
 ?>
 
-<!-- 
+<!--
 <html>
 <nav class="navbar navbar-expand-sm bg-light navbar-light">
   <ul class="navbar-nav">
@@ -120,7 +124,7 @@ if (isset($_POST['delete_item'])){
     <div class="welcome">
         <div class="alert alert-success"><?= $_SESSION['message'] ?></div>
         Welcome <span class="user"><?= $_SESSION['username'] ?></span>
-        
+
 
     </div>
 </div>
@@ -178,10 +182,10 @@ if (isset($_POST['delete_item'])){
 Welcome HERREE <span class="user"><?= $_SESSION['firstname'] ?></span>
 </section> -->
 
-    
-    
+
+
     <!-- Footer -->
-    
+
 
     <!-- Bootstrap core JavaScript -->
     <script src="vendor/jquery/jquery.min.js"></script>
