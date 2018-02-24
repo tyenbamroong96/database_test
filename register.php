@@ -1,20 +1,15 @@
 <?php
 session_start();
 $_SESSION['message'] = '';
-$serverName = "tcp:ragnasvr.database.windows.net, 1433";
-$connectionOptions = array(
-    "Database" => "ragnaDB",
-    "Uid" => "ragnarok@ragnasvr",
-    "PWD" => "Korangar2"
-);
-//Establishes the connection
-$conn = sqlsrv_connect($serverName, $connectionOptions);
+$connectionInfo = array("UID" => "auctora@auctora-server", "pwd" => "arotcua1!", "Database" => "auctoraDB");
+$serverName = "tcp:auctora-server.database.windows.net,1433";
+$conn = sqlsrv_connect($serverName, $connectionInfo);
 
 
 
 //the form has been submitted with post
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    
+
     //two passwords are equal to each other
     if ($_POST['password'] == $_POST['confirmpassword']) {
         //set all the post variables
@@ -47,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         exit;
       }
 
-        
+
 
     }
     else {
@@ -79,12 +74,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   </div>
 </div>
 </html>
-
-
-
-
-
-
-
-
-

@@ -1,12 +1,10 @@
 <?php
 session_start();
 $_SESSION['message'] = '';
-$serverName = "tcp:ragnasvr.database.windows.net, 1433";
-$connectionOptions = array(
-    "Database" => "ragnaDB",
-    "Uid" => "ragnarok@ragnasvr",
-    "PWD" => "Korangar2"
-);
+$connectionInfo = array("UID" => "auctora@auctora-server", "pwd" => "arotcua1!", "Database" => "auctoraDB");
+$serverName = "tcp:auctora-server.database.windows.net,1433";
+$conn = sqlsrv_connect($serverName, $connectionInfo);
+
 // echo $_SESSION;
 
 // echo '<pre>';
@@ -14,8 +12,7 @@ $connectionOptions = array(
 // echo '</pre>';
 
 
-//Establishes the connection
-$conn = sqlsrv_connect($serverName, $connectionOptions);
+
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -115,15 +112,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../../twitter-bootstrap/twitter-bootstrap-v2/docs/assets/css/bootstrap.css" rel="stylesheet">
 <script src="./js/jQuery.js"></script>
 <script src="./js/jQueryUI/ui.tablesorter.js"></script>
-<script src="./jquery/jquery-3.3.1.min.js"></script>
-<script src="./jquery/flipclock/flipclock.min.js"></script>
-
-<script type="text/javascript">
-	var clock = $('.clock').FlipClock(3600 * 24 * 3, {
-		clockFace: 'DailyCounter',
-		countdown: true
-	});
-</script>
 
 <script>
   $(document).ready(function() {
@@ -171,8 +159,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </div>
       </div>
     </nav>
-
-    <div class="clock"></div>
 
 
 

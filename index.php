@@ -3,14 +3,11 @@ session_start();
 
 $_SESSION['message'] = '';
 $_SESSION['firstname'] = '';
-$serverName = "tcp:ragnasvr.database.windows.net, 1433";
-$connectionOptions = array(
-    "Database" => "ragnaDB",
-    "Uid" => "ragnarok@ragnasvr",
-    "PWD" => "Korangar2"
-);
+$connectionInfo = array("UID" => "auctora@auctora-server", "pwd" => "arotcua1!", "Database" => "auctoraDB");
+$serverName = "tcp:auctora-server.database.windows.net,1433";
+$conn = sqlsrv_connect($serverName, $connectionInfo);
 //Establishes the connection
-$conn = sqlsrv_connect($serverName, $connectionOptions);
+
 
 
 
@@ -59,12 +56,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-  
+
   <div class="module">
     <h1 align="center">AUCTORA</h1>
     <h1 align="center">Login</h1>
     <form class="form" action="index.php" method="post" enctype="multipart/form-data" autocomplete="off">
-      
+
       <div class="alert alert-error"><?= $_SESSION['message'] ?></div>
       <input type="email" placeholder="Email" name="email" required />
       <input type="password" placeholder="Password" name="password" autocomplete="new-password" required />
@@ -79,12 +76,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 </div>
 </html>
-
-
-
-
-
-
-
-
-
