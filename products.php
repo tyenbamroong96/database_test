@@ -636,12 +636,33 @@ if(isset($_POST['Query']))
 
   } // foreach
       echo $results;
+      echo
       exit;
 } // if
 
 
 ?>
-
+<script>
+  $(function(){
+  var timeLeft = function(){
+    var now = new Date();
+    console.log(now);
+    clearCountDown
+    if(now){
+      countDown();
+    }
+  };
+  var timeout;
+  var countDown = function(){
+    timeout = setTimeout(function(){
+      timeLeft();
+    },1000);
+  };
+  var clearCountDown = function(){
+    clearTimeout(timeout);
+  }
+  });
+</script>
 
 
 
