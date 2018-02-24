@@ -679,9 +679,8 @@ if(isset($_POST['Query']))
 
         //  @odbc_close($conn);
         $results .= "<tr><td>$count</td><td><a href=\"$link\"><img src=\"$picURL\"></a></td><td> <a href=\"$link\">$title</a></br></br>     <button type=\"button\" class=\"btn btn-warning\" onclick=\"location.href = '$link';\">Buy/Bid</button> &nbsp;&nbsp;      <iframe name=\"votar\" style=\"display:none;\"></iframe>  <form id= \"add_to_watchlist\" target=\"votar\" method=\"post\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"add_to_watchlist\" onclick=\"return confirm('Want to add item?');\" value=\"$sqlEbayItemID\">Add to Watchlist</button></form>           </br></br>      $subtitle </br></br> $sellingState </br></br> $bids</br></br> $condition</br></br>$conditionInfo</br></br> </br> $ebayItemId</br></br> $display</br><td >$location</td>"
-             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td><p id=\"$count\"></p></td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td></tr>";
+             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td><p onclick="countDown('".$count."','".$endTime."');" id=\"$count\"></p></td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td></tr>";
 
-        $results .=  " <script>$(document).ready(function(){setTimeout(function(){countDown('".$count."','".$endTime."');},1000);});</script> ";
           $count++;
       }// each item
 
