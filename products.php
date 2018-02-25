@@ -596,6 +596,7 @@ if(isset($_POST['Query']))
         $getMatches= sqlsrv_query($conn, $query);
 
         $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
+        $last_id = $row['id'];
         //check for duplication
         if(!$row){
         $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image) VALUES (?,?,?,?,?,?);";
