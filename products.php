@@ -493,7 +493,7 @@ if(isset($_POST['Query']))
 
 
       // If the response was loaded, parse it and build links
-
+      $ident = 1;
       foreach($resp->searchResult->item as $item) {
         if ($item->galleryURL) {
           $picURL = $item->galleryURL;
@@ -596,7 +596,6 @@ if(isset($_POST['Query']))
         $getMatches= sqlsrv_query($conn, $query);
 
         $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
-        $last_id = $row['ID'];
         //check for duplication
         if(!$row){
         $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image) VALUES (?,?,?,?,?,?);";
@@ -604,7 +603,6 @@ if(isset($_POST['Query']))
         $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image);
         $getResults= sqlsrv_query($conn, $tsql, $params);
         $rowsAffected = sqlsrv_rows_affected($getResults);
-        $last_id = sqlsrv_get_field($getResults, 0);
         if ($getResults == FALSE or $rowsAffected == FALSE)
           {
             //echo $count;
@@ -627,6 +625,7 @@ if(isset($_POST['Query']))
         } else {
           $curr = "$priceCurr / $shipCurr";  // potential case where price/ship currencies differ
         }
+
         $timeLeft = getPrettyTimeFromEbayTime($item->sellingStatus->timeLeft);
         //$endTime = strtotime($item->listingInfo->endTime);   // returns Epoch seconds
         $endTime = $item->listingInfo->endTime;
@@ -650,8 +649,9 @@ if(isset($_POST['Query']))
 
         //  @odbc_close($conn);
         $results .= "<tr><td>$count</td><td><a href=\"$link\"><img src=\"$picURL\"></a></td><td> <a href=\"$link\">$title</a></br></br>     <button type=\"button\" class=\"btn btn-warning\" onclick=\"location.href = '$link';\">Buy/Bid</button> &nbsp;&nbsp;      <iframe name=\"votar\" style=\"display:none;\"></iframe>  <form id= \"add_to_watchlist\" target=\"votar\" method=\"post\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"add_to_watchlist\" onclick=\"return confirm('Want to add item?');\" value=\"$sqlEbayItemID\">Add to Watchlist</button></form>           </br></br>      $subtitle </br></br> $sellingState </br></br> $bids</br></br> $condition</br></br>$conditionInfo</br></br> </br> $ebayItemId</br></br> $display</br><td >$location</td>"
-             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td><p id=\"$last_id\"></p><script>countDown('".$last_id."','".$endTime."')</script></td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td></tr>";
+             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td><p id=\"$ident\"></p><script>countDown('".$ident."','".$endTime."')</script></td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td></tr>";
         $count++;
+        $ident++;
       }// each item
 
 
