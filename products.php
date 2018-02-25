@@ -57,6 +57,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
+<!--
+<html>
+<nav class="navbar navbar-expand-sm bg-light navbar-light">
+  <ul class="navbar-nav">
+    <li class="nav-item active">
+      <a class="nav-link" href="#">Active</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#">Disabled</a>
+    </li>
+  </ul>
+</nav>
+
+<div class="body content">
+    <div class="welcome">
+        <div class="alert alert-success"><?= $_SESSION['message'] ?></div>
+        Welcome <span class="user"><?= $_SESSION['username'] ?></span>
+
+
+    </div>
+</div>
+
+</html>
+ -->
 
 
 <!DOCTYPE html>
@@ -566,17 +596,16 @@ if(isset($_POST['Query']))
         $getMatches= sqlsrv_query($conn, $query);
 
         $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
-        $viewcount =0;
         //check for duplication
         if(!$row){
-        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image, view_count) VALUES (?,?,?,?,?,?,?);";
+        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image) VALUES (?,?,?,?,?,?);";
         // $user_id = $_SESSION['user_id'];
-        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image,$viewcount);
+        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image);
         $getResults= sqlsrv_query($conn, $tsql, $params);
         $rowsAffected = sqlsrv_rows_affected($getResults);
         if ($getResults == FALSE or $rowsAffected == FALSE)
           {
-            echo $count;
+            //echo $count;
             die(FormatErrors(sqlsrv_errors()));
           }
           else{
@@ -587,7 +616,8 @@ if(isset($_POST['Query']))
           // echo ($rowsAffected. " row(s) inserted: " . PHP_EOL);
           //header("Location: FindItemsAdvanced.php");
           sqlsrv_free_stmt($getResults);
-        }        // Determine currency to display - so far only seen cases where priceCurr = shipCurr, but may be others
+        }
+        // Determine currency to display - so far only seen cases where priceCurr = shipCurr, but may be others
         $priceCurr = (string) $item->sellingStatus->convertedCurrentPrice['currencyId'];
         $shipCurr  = (string) $item->shippingInfo->shippingServiceCost['currencyId'];
         if ($priceCurr == $shipCurr) {
@@ -618,7 +648,7 @@ if(isset($_POST['Query']))
 
         //  @odbc_close($conn);
         $results .= "<tr><td>$count</td><td><a href=\"$link\"><img src=\"$picURL\"></a></td><td> <a href=\"$link\">$title</a></br></br>     <button type=\"button\" class=\"btn btn-warning\" onclick=\"location.href = '$link';\">Buy/Bid</button> &nbsp;&nbsp;      <iframe name=\"votar\" style=\"display:none;\"></iframe>  <form id= \"add_to_watchlist\" target=\"votar\" method=\"post\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"add_to_watchlist\" onclick=\"return confirm('Want to add item?');\" value=\"$sqlEbayItemID\">Add to Watchlist</button></form>           </br></br>      $subtitle </br></br> $sellingState </br></br> $bids</br></br> $condition</br></br>$conditionInfo</br></br> </br> $ebayItemId</br></br> $display</br><td >$location</td>"
-             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td>$timeLeft</td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td></tr>";
+             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td><p id=\"$count\"></p><script>countDown('".$count."','".$endTime."')</script></td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td></tr>";
         $count++;
       }// each item
 
