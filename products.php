@@ -566,16 +566,17 @@ if(isset($_POST['Query']))
         $getMatches= sqlsrv_query($conn, $query);
 
         $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
+        $viewcount =0;
         //check for duplication
         if(!$row){
-        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image) VALUES (?,?,?,?,?,?);";
+        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image, view_count) VALUES (?,?,?,?,?,?,?);";
         // $user_id = $_SESSION['user_id'];
-        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image);
+        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image,$viewcount);
         $getResults= sqlsrv_query($conn, $tsql, $params);
         $rowsAffected = sqlsrv_rows_affected($getResults);
         if ($getResults == FALSE or $rowsAffected == FALSE)
           {
-            //echo $count;
+            echo $count;
             die(FormatErrors(sqlsrv_errors()));
           }
           else{
@@ -586,8 +587,7 @@ if(isset($_POST['Query']))
           // echo ($rowsAffected. " row(s) inserted: " . PHP_EOL);
           //header("Location: FindItemsAdvanced.php");
           sqlsrv_free_stmt($getResults);
-        }
-        // Determine currency to display - so far only seen cases where priceCurr = shipCurr, but may be others
+        }        // Determine currency to display - so far only seen cases where priceCurr = shipCurr, but may be others
         $priceCurr = (string) $item->sellingStatus->convertedCurrentPrice['currencyId'];
         $shipCurr  = (string) $item->shippingInfo->shippingServiceCost['currencyId'];
         if ($priceCurr == $shipCurr) {
