@@ -437,6 +437,8 @@ if(isset($_POST['Query']))
            $results .= '<table id="example" class="tablesorter" border="0" width="100%" cellpadding="0" cellspacing="1">' . "\n";
            $results .= "<thead><tr><th>Count</th><th /><th>Product details</th><th>Seller Info </th><th>Price &nbsp; &nbsp; </th><th>Shipping &nbsp; &nbsp; </th><th>Total &nbsp; &nbsp; </th><th><!--Currency--></th><th>Time Left</th><th>Start Time</th><th>End Time</th><th>Number of views on this app</th></tr></thead>\n";
            $count=1;
+           $ident = 1;
+
     if ($rest && $rest->paginationOutput->totalEntries > 0) {
     for($pageNumber=1;$pageNumber<=$pageCount;$pageNumber++){
     $apicall = "$endpoint?OPERATION-NAME=findItemsAdvanced"
@@ -492,7 +494,7 @@ if(isset($_POST['Query']))
 
 
       // If the response was loaded, parse it and build links
-      $ident = 1;
+
       foreach($resp->searchResult->item as $item) {
         if ($item->galleryURL) {
           $picURL = $item->galleryURL;
