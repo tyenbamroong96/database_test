@@ -492,7 +492,7 @@ if(isset($_POST['Query']))
 
 
       // If the response was loaded, parse it and build links
-
+      $ident = 1;
       foreach($resp->searchResult->item as $item) {
         if ($item->galleryURL) {
           $picURL = $item->galleryURL;
