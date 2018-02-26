@@ -12,7 +12,8 @@ $conn = sqlsrv_connect($serverName, $connectionInfo);
 // echo '</pre>';
 
 
-
+//Establishes the connection
+;
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -126,38 +127,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         10: { sorter: 'text'}   // specify text sorter, otherwise mistakenly takes shortDate parser
       }
     });
-
-
   });
-
-  var countDown = function(id , date){
-  var countDownDate = new Date(date).getTime();
-     // Update the count down every 1 second
-  var x = setInterval(function() {
-
-    // Get todays date and time
-    var now = new Date().getTime();
-
-    // Find the distance between now an the count down date
-    var distance = countDownDate - now;
-
-    // Time calculations for days, hours, minutes and seconds
-    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-    // Display the result in the element with id="demo"
-    document.getElementById(id).innerHTML = days + "days " + hours + "hours "
-    + minutes + "minutes " + seconds + "seconds ";
-
-    // If the count down is finished, write some text
-    if (distance < 0) {
-      clearInterval(x);
-      document.getElementById(id).innerHTML = "EXPIRED";
-    }
-  }, 1000);
- };
 </script>
 
 
@@ -436,7 +406,7 @@ if(isset($_POST['Query']))
            //echo "</br>";
            $results .= 'Total items : ' . $rest->paginationOutput->totalEntries . "<br />\n";
            $results .= '<table id="example" class="tablesorter" border="0" width="100%" cellpadding="0" cellspacing="1">' . "\n";
-           $results .= "<thead><tr><th>Count</th><th /><th>Product details</th><th>Seller Info </th><th>Price &nbsp; &nbsp; </th><th>Shipping &nbsp; &nbsp; </th><th>Total &nbsp; &nbsp; </th><th><!--Currency--></th><th>Time Left</th><th>Start Time</th><th>End Time</th></tr></thead>\n";
+           $results .= "<thead><tr><th>Count</th><th /><th>Product details</th><th>Seller Info </th><th>Price &nbsp; &nbsp; </th><th>Shipping &nbsp; &nbsp; </th><th>Total &nbsp; &nbsp; </th><th><!--Currency--></th><th>Time Left</th><th>Start Time</th><th>End Time</th><th>Number of views on this app</th></tr></thead>\n";
            $count=1;
     if ($rest && $rest->paginationOutput->totalEntries > 0) {
     for($pageNumber=1;$pageNumber<=$pageCount;$pageNumber++){
@@ -493,7 +463,7 @@ if(isset($_POST['Query']))
 
 
       // If the response was loaded, parse it and build links
-      $ident = 1;
+
       foreach($resp->searchResult->item as $item) {
         if ($item->galleryURL) {
           $picURL = $item->galleryURL;
@@ -596,16 +566,18 @@ if(isset($_POST['Query']))
         $getMatches= sqlsrv_query($conn, $query);
 
         $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
+        $viewcount =1;
         //check for duplication
+        $status_on_ebay = 'active';
         if(!$row){
-        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image) VALUES (?,?,?,?,?,?);";
+        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image, view_count, status) VALUES (?,?,?,?,?,?,?,?);";
         // $user_id = $_SESSION['user_id'];
-        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image);
+        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image,$viewcount,$status_on_ebay);
         $getResults= sqlsrv_query($conn, $tsql, $params);
         $rowsAffected = sqlsrv_rows_affected($getResults);
         if ($getResults == FALSE or $rowsAffected == FALSE)
           {
-            //echo $count;
+            echo $count;
             die(FormatErrors(sqlsrv_errors()));
           }
           else{
@@ -617,6 +589,22 @@ if(isset($_POST['Query']))
           //header("Location: FindItemsAdvanced.php");
           sqlsrv_free_stmt($getResults);
         }
+        else{
+          $count = $row['view_count'];
+          $id = $row['ID'];
+        //  echo "id ";
+        //echo $id;
+          $viewcount = $count + 1;
+        //  echo $update_count;
+        //  echo "</br>";
+          $sql = "UPDATE auction.product_searches SET view_count=$viewcount WHERE id=$id";
+          $getResultsD= sqlsrv_query($conn, $sql);
+          $rowsAffectedD = sqlsrv_rows_affected($getResultsD);
+          if ($getResultsD == FALSE or $rowsAffectedD == FALSE)
+              die(FormatErrors(sqlsrv_errors()));
+
+        }
+
         // Determine currency to display - so far only seen cases where priceCurr = shipCurr, but may be others
         $priceCurr = (string) $item->sellingStatus->convertedCurrentPrice['currencyId'];
         $shipCurr  = (string) $item->shippingInfo->shippingServiceCost['currencyId'];
@@ -625,7 +613,6 @@ if(isset($_POST['Query']))
         } else {
           $curr = "$priceCurr / $shipCurr";  // potential case where price/ship currencies differ
         }
-
         $timeLeft = getPrettyTimeFromEbayTime($item->sellingStatus->timeLeft);
         //$endTime = strtotime($item->listingInfo->endTime);   // returns Epoch seconds
         $endTime = $item->listingInfo->endTime;
@@ -649,9 +636,8 @@ if(isset($_POST['Query']))
 
         //  @odbc_close($conn);
         $results .= "<tr><td>$count</td><td><a href=\"$link\"><img src=\"$picURL\"></a></td><td> <a href=\"$link\">$title</a></br></br>     <button type=\"button\" class=\"btn btn-warning\" onclick=\"location.href = '$link';\">Buy/Bid</button> &nbsp;&nbsp;      <iframe name=\"votar\" style=\"display:none;\"></iframe>  <form id= \"add_to_watchlist\" target=\"votar\" method=\"post\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"add_to_watchlist\" onclick=\"return confirm('Want to add item?');\" value=\"$sqlEbayItemID\">Add to Watchlist</button></form>           </br></br>      $subtitle </br></br> $sellingState </br></br> $bids</br></br> $condition</br></br>$conditionInfo</br></br> </br> $ebayItemId</br></br> $display</br><td >$location</td>"
-             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td><p id=\"$ident\"></p><script>countDown('".$ident."','".$endTime."')</script></td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td></tr>";
-        $count++;
-        $ident++;
+             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td>$timeLeft</td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td><td>$viewcount</td></tr>";
+            $count++;
       }// each item
 
 
@@ -669,12 +655,12 @@ if(isset($_POST['Query']))
 
   } // foreach
       echo $results;
-
       exit;
 } // if
 
 
 ?>
+
 
 
 
