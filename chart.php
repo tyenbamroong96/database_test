@@ -38,7 +38,7 @@ var myChart = new Chart(ctx, {
     data: {
         labels: ["Red", "Blue", "Yellow"],
         datasets: [{
-            label: '# of Votes',
+            label: 'Number of views',
             data: [<?php echo $rolexcount; ?>, <?php echo $casiocount; ?>, <?php echo $seikocount ?>],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
