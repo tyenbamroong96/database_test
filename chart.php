@@ -5,13 +5,20 @@ $connectionInfo = array("UID" => "auctora@auctora-server", "pwd" => "arotcua1!",
 $serverName = "tcp:auctora-server.database.windows.net,1433";
 $conn = sqlsrv_connect($serverName, $connectionInfo);
 
-$query = "SELECT * FROM dbo.counts";
-$getMatches= sqlsrv_query($conn, $query);
+$query1 = "SELECT SUM(rolexcount) FROM dbo.counts";
+$query2 = "SELECT SUM(casiocount) FROM dbo.counts";
+$query3 = "SELECT SUM(rolexcount) FROM dbo.counts";
+$getMatches1= sqlsrv_query($conn, $query1);
+$getMatches2= sqlsrv_query($conn, $query2);
+$getMatches3= sqlsrv_query($conn, $query3);
 
-$row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
-$rolexcount = $row['rolexcount'];
-$casiocount = $row['casiocount'];
-$seikocount = $row['seikocount'];
+$row1 = sqlsrv_fetch_array($getMatches1, SQLSRV_FETCH_ASSOC);
+$row2 = sqlsrv_fetch_array($getMatches2, SQLSRV_FETCH_ASSOC);
+$row3 = sqlsrv_fetch_array($getMatches3, SQLSRV_FETCH_ASSOC);
+
+$rolexcount = $row1['rolexcount'];
+$casiocount = $row2['casiocount'];
+$seikocount = $row3['seikocount'];
 
 ?>
 
