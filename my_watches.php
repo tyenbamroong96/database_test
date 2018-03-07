@@ -17,10 +17,12 @@ $current_user_id = $_SESSION['userID'];
 
 // $tsql= "SELECT * FROM auction.watch_list WHERE user_id = '$current_user_id'";
 $tsql = "SELECT * FROM auction.product_searches AS auc
-WHERE auc.ID IN (SELECT ebayID FROM auction.watch_list WHERE user_id = '$current_user_id') AND auc.status LIKE 'active'";
+WHERE auc.ID IN (SELECT ebayID FROM auction.watch_list WHERE user_id = '$current_user_id') AND auc.status LIKE 'inactive'";
 $getResults= sqlsrv_query($conn, $tsql, array(), array( "Scrollable" => SQLSRV_CURSOR_KEYSET ));
 if ($getResults == FALSE)
     die(FormatErrors(sqlsrv_errors()));
+
+
 
 // $row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC);
 $num_of_rows = sqlsrv_num_rows($getResults);
@@ -39,9 +41,6 @@ echo "
 <th>Price</th>
 <th>My bid</th>
 <th>Highest Bid</th>
-<th>Review/ Place Bid</th>
-<th> Similar Items on Auction</th>
-<th>Remove Item</th>
 </tr>";
 
 // $row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC);
@@ -76,25 +75,17 @@ while ($row = sqlsrv_fetch_array($getResults, SQLSRV_FETCH_ASSOC)) {
 
   $highest_bid = max($highest_bid_array);
 
-
-  echo "<tr>";
+  if($row_2['my_bid']!= 0 and $row_2['my_bid'] >= $highest_bid)
+  {
+    echo "<tr>";
 
   echo "<td>" . "<a href=\"$product_link\"><img src=\"$img_src\"></a>" . "</td>";
   echo "<td>" . "<a href=\"$product_link\" target=\"_blank\">$title</a>" . "</td>";
   echo "<td align='center'>" . $row['price'] . "</td>";
   echo "<td align='center'>" . $row_2['my_bid'] . "</td>";
   echo "<td align='center'>" . $highest_bid . "</td>";
-  echo "<td>" ;
-  echo " <form method=\"POST\" action=\"review.php\" >  <button type=\"submit\" class=\"btn btn-primary\" name=\"ebayID\" value=\"$ebayidval\" >Add Your Review</button></form>";
-  echo "<form method=\"POST\" action=\"review_show.php\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"ebayIDShow\" value=\"$ebayidval\" >Show all Reviews</button></form>";
-  echo " <form method=\"POST\" action=\"bid.php\">  <button type=\"submit\" class=\"btn btn-success\" name=\"ebayID\" value=\"$ebayidval\" >Place bid</button></form>";
+  }
 
-  echo "</td>";
-  echo "<td>";
-  echo "<form method=\"POST\" action=\"similar_Items.php\" >  <button type=\"submit\" class=\"btn btn-primary\" name=\"ebayID\" value=\"$ebayidval\" >View Similar Items on Auction</button></form>";
-  echo "</td>";
-  echo "<td>" . "<form id= \"delete_item\" method=\"post\">  <button type=\"submit\" class=\"btn btn-danger\" name=\"delete_item\" onclick=\"return confirm('Remove item?');\" value=\"$product_id\">Remove Item</button></form> </td>";
-  echo "</tr>";
   }
 
 echo "</table>";
@@ -102,23 +93,9 @@ echo "</table>";
 
 else{
   echo "<br><br><br><br><br>
-  <p align='center'>Go to the products page to start adding items to your watchlist!</p>";
+  <p align='center'>You have not won any auctions yet.</p>";
 }
 
-
-
-if (isset($_POST['delete_item'])){
-  $my_ebay_id = $_POST['delete_item'];
-  $current_user_id = $_SESSION['userID'];
-
-  $tsql= "DELETE FROM auction.watch_list WHERE ebayID = '$my_ebay_id' AND user_id = '$current_user_id'";
-  $getResults= sqlsrv_query($conn, $tsql);
-
-  $rowsAffected = sqlsrv_rows_affected($getResults);
-  if ($getResults == FALSE or $rowsAffected == FALSE)
-      die(FormatErrors(sqlsrv_errors()));
-  echo "<meta http-equiv='refresh' content='0'>";
-}
 
 
 
@@ -191,10 +168,10 @@ if (isset($_POST['delete_item'])){
               <a class="nav-link js-scroll-trigger" href="ml.php">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="my_watches.php">My Watches</a>
+              <a class="nav-link js-scroll-trigger" href="#">My Watches</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link js-scroll-trigger" href="#">My Watchlist</a>
+              <a class="nav-link js-scroll-trigger" href="watchlist.php">My Watchlist</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="products.php">Products</a>
