@@ -1,4 +1,11 @@
-<canvas id="myChart" width="400" height="400"></canvas>
+<head>
+  <script src="./Chart.js"></script>
+  <script src="./Chart.min.js"></script>
+</head>
+
+<body>
+  <canvas id="myChart" width="400" height="400"></canvas>
+</body>
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
