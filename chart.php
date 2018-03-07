@@ -36,7 +36,7 @@ var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: ["Red", "Blue", "Yellow"],
+        labels: ["Rolex", "Casio", "Seiko"],
         datasets: [{
             label: 'Number of views',
             data: [<?php echo $rolexcount; ?>, <?php echo $casiocount; ?>, <?php echo $seikocount ?>],
