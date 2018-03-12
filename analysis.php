@@ -77,11 +77,9 @@ $seikocount = $row3['skcount'];
   <br />
 
   <!-- Display Chart -->
-  <div class="col-md-2"></div>
-    <div class="col-md-8" id="page-wrapper">
-      <canvas id="myChart" width="150" height="100"></canvas>
-    </div>
-  <div class="col-md-2"></div>
+  <div class="col-md-12" id="page-wrapper">
+    <canvas id="myChart" width="150" height="100"></canvas>
+  </div>
 </body>
 <script>
 var ctx = document.getElementById("myChart").getContext('2d');
