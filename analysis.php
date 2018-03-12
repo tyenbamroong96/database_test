@@ -38,6 +38,14 @@ $seikocount = $row3['skcount'];
   <link href="css/scrolling-nav.css" rel="stylesheet">
   <script src="./js/Chart.js"></script>
   <script src="./js/Chart.min.js"></script>
+  <style>
+    .center {
+    margin: auto;
+    width: 50%;
+    border: 3px solid green;
+    padding: 10px;
+    }
+  </style>
 </head>
 
 <body>
@@ -77,12 +85,8 @@ $seikocount = $row3['skcount'];
   <br />
 
   <!-- Display Chart -->
-  <div class="col-md-12" id="page-wrapper">
-    <div class="col-md-2"></div>
-    <div class="col-md-8">
-      <canvas id="myChart" width="150" height="80"></canvas>
-    </div>
-    <div class="col-md-2"></div>
+  <div class="center">
+    <canvas id="myChart" width="150" height="80"></canvas>
   </div>
 </body>
 <script>
