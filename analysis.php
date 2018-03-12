@@ -122,7 +122,6 @@ var brand = new Chart(ctx, {
     data: {
         labels: ["Rolex", "Casio", "Seiko"],
         datasets: [{
-            label: 'Brand',
             data: [<?php echo $rolexcount; ?>, <?php echo $casiocount; ?>, <?php echo $seikocount ?>],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
@@ -154,7 +153,6 @@ var type = new Chart(ctx2, {
     data: {
         labels: ["Analog", "Digital"],
         datasets: [{
-            label: 'Type',
             data: [<?php echo $analogcount; ?>, <?php echo $digitalcount; ?>],
             backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
@@ -184,7 +182,6 @@ var condition = new Chart(ctx3, {
     data: {
         labels: ["New", "Used"],
         datasets: [{
-            label: 'Condition',
             data: [<?php echo $newcount; ?>, <?php echo $usedcount; ?>],
             backgroundColor: [
                 'rgba(255, 159, 64, 0.2)',
