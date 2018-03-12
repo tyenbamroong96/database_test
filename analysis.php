@@ -8,18 +8,35 @@ $conn = sqlsrv_connect($serverName, $connectionInfo);
 $query1 = "SELECT SUM(rolexcount) AS rlcount FROM dbo.filtercounts";
 $query2 = "SELECT SUM(casiocount) AS cacount FROM dbo.filtercounts";
 $query3 = "SELECT SUM(seikocount) AS skcount FROM dbo.filtercounts";
+$query4 = "SELECT SUM(analogcount) AS anacount FROM dbo.filtercounts";
+$query5 = "SELECT SUM(digitalcount) AS digicount FROM dbo.filtercounts";
+$query6 = "SELECT SUM(newcount) AS ncount FROM dbo.filtercounts";
+$query7 = "SELECT SUM(usedcount) AS ucount FROM dbo.filtercounts";
 
 $getMatches1= sqlsrv_query($conn, $query1);
 $getMatches2= sqlsrv_query($conn, $query2);
 $getMatches3= sqlsrv_query($conn, $query3);
+$getMatches4= sqlsrv_query($conn, $query1);
+$getMatches5= sqlsrv_query($conn, $query2);
+$getMatches6= sqlsrv_query($conn, $query1);
+$getMatches7= sqlsrv_query($conn, $query2);
 
 $row1 = sqlsrv_fetch_array($getMatches1, SQLSRV_FETCH_ASSOC);
 $row2 = sqlsrv_fetch_array($getMatches2, SQLSRV_FETCH_ASSOC);
 $row3 = sqlsrv_fetch_array($getMatches3, SQLSRV_FETCH_ASSOC);
+$row4 = sqlsrv_fetch_array($getMatches4, SQLSRV_FETCH_ASSOC);
+$row5 = sqlsrv_fetch_array($getMatches5, SQLSRV_FETCH_ASSOC);
+$row6 = sqlsrv_fetch_array($getMatches1, SQLSRV_FETCH_ASSOC);
+$row7 = sqlsrv_fetch_array($getMatches2, SQLSRV_FETCH_ASSOC);
 
 $rolexcount = $row1['rlcount'];
 $casiocount = $row2['cacount'];
 $seikocount = $row3['skcount'];
+$analogcount = $row4['anacount'];
+$digitalcount = $row5['digicount'];
+$newcount = $row6['ncount'];
+$usedcount = $row7['ucount'];
+
 
 ?>
 
@@ -42,7 +59,7 @@ $seikocount = $row3['skcount'];
     .center {
     margin: auto;
     width: 50%;
-    border: 3px solid green;
+    border: 1.5px solid black;
     padding: 10px;
     }
   </style>
@@ -86,12 +103,21 @@ $seikocount = $row3['skcount'];
 
   <!-- Display Chart -->
   <div class="center">
-    <canvas id="myChart" width="150" height="80"></canvas>
+    <canvas id="brand" width="150" height="80"></canvas>
+  </div>
+  <br />
+  <div class="center">
+    <canvas id="type" width="150" height="80"></canvas>
+  </div>
+  <br />
+  <div class="center">
+    <canvas id="condition" width="150" height="80"></canvas>
   </div>
 </body>
 <script>
-var ctx = document.getElementById("myChart").getContext('2d');
-var myChart = new Chart(ctx, {
+// Brand analysis
+var ctx = document.getElementById("brand").getContext('2d');
+var brand = new Chart(ctx, {
     type: 'bar',
     data: {
         labels: ["Rolex", "Casio", "Seiko"],
@@ -108,7 +134,67 @@ var myChart = new Chart(ctx, {
                 'rgba(54, 162, 235, 1)',
                 'rgba(255, 206, 86, 1)'
             ],
-            borderWidth: 0.5
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+// Type Analysis
+var ctx2 = document.getElementById("type").getContext('2d');
+var type = new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: ["Analog", "Digital"],
+        datasets: [{
+            label: 'Number of views',
+            data: [<?php echo $analogcount; ?>, <?php echo $digitalcount; ?>],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+// Condition Analysis
+var ctx3 = document.getElementById("condition").getContext('2d');
+var condition = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+        labels: ["New", "Used"],
+        datasets: [{
+            label: 'Number of views',
+            data: [<?php echo $newcount; ?>, <?php echo $usedcount; ?>],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+            ],
+            borderWidth: 1
         }]
     },
     options: {
