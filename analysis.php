@@ -120,7 +120,10 @@ var ctx = document.getElementById("brand").getContext('2d');
 var brand = new Chart(ctx, {
     type: 'bar',
     data: {
-        labels: 'Rolex',
+        datasets: [{
+            data: [10, 20, 30]
+        }]
+        labels: ["Rolex", "Casio", "Seiko"],
     }
 });
 // Type Analysis
