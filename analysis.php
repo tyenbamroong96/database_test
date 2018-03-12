@@ -58,7 +58,7 @@ $usedcount = $row7['ucount'];
   <style>
     .center {
     margin: auto;
-    width: 70%;
+    width: 60%;
     border: 1.5px solid black;
     padding: 10px;
     }
