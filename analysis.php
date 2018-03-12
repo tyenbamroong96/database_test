@@ -108,6 +108,10 @@ $usedcount = $row7['ucount'];
   <br />
   <div class="center">
     <canvas id="type" width="150" height="80"></canvas>
+    <div>
+      The bar chart above displays the numbers of user views of the three brands
+      ; Rolex, Casino and Seiko.
+    </div>
   </div>
   <br />
   <div class="center">
