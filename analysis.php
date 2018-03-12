@@ -117,15 +117,39 @@ $usedcount = $row7['ucount'];
 <script>
 // Brand analysis
 var ctx = document.getElementById("brand").getContext('2d');
-var brand = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        datasets: [{
-            data: [10, 20, 30]
-        }],
-        labels: ['Rolex', 'Casio', 'Seiko'],
-    }
-});
+var brand = {
+			labels: ['Rolex', 'Casio', 'Seiko'],
+			datasets: [{
+				label: 'Rolex',
+				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.red,
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}, {
+				label: 'Dataset 2',
+				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+				borderColor: window.chartColors.blue,
+				borderWidth: 1,
+				data: [
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor(),
+					randomScalingFactor()
+				]
+			}]
+
+		};
 // Type Analysis
 var ctx2 = document.getElementById("type").getContext('2d');
 var type = new Chart(ctx2, {
@@ -147,14 +171,17 @@ var type = new Chart(ctx2, {
         }]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
+    legend: {
+        display: false
+    },
+    tooltips: {
+        callbacks: {
+           label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+           }
         }
     }
+  }
 });
 // Condition Analysis
 var ctx3 = document.getElementById("condition").getContext('2d');
