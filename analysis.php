@@ -211,10 +211,29 @@ var type = new Chart(ctx2, {
       },
       scales: {
             yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
+              scaleLabel: {
+                  display: true,
+                  labelString: 'Number of views'
+              },
+              ticks: {
+                  beginAtZero:true
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                  display: true,
+                  labelString: 'Display'
+              },
+              ticks: {
+                  beginAtZero:true
+              }
             }]
+      },
+      title: {
+            display: true,
+            fontSize: 20,
+            fontStyle: 'bold',
+            text: 'User views based on type'
       }
     }
 });
@@ -251,10 +270,29 @@ var condition = new Chart(ctx3, {
       },
       scales: {
             yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
+              scaleLabel: {
+                  display: true,
+                  labelString: 'Number of views'
+              },
+              ticks: {
+                  beginAtZero:true
+              }
+            }],
+            xAxes: [{
+              scaleLabel: {
+                  display: true,
+                  labelString: 'Conditions'
+              },
+              ticks: {
+                  beginAtZero:true
+              }
             }]
+      },
+      title: {
+            display: true,
+            fontSize: 20,
+            fontStyle: 'bold',
+            text: 'User views based on condition'
       }
     }
 });
