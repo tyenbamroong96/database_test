@@ -102,12 +102,13 @@ $usedcount = $row7['ucount'];
   <br />
 
   <!-- Display Chart -->
+  <label for = "idOfCanvas">
+    User views based on brand<br />
   <div class="center">
-    <label for = "idOfCanvas">
-      User views based on brand<br />
       <canvas id="brand" width="150" height="80"></canvas>
-    </label>
   </div>
+</label>
+
   <br />
   <div class="center">
     <canvas id="type" width="150" height="80"></canvas>
