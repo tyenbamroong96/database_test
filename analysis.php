@@ -102,14 +102,17 @@ $usedcount = $row7['ucount'];
   <br />
 
   <!-- Display Chart -->
+  <b>Brand</b> <br />
   <div class="center">
     <canvas id="brand" width="150" height="80"></canvas>
   </div>
   <br />
+  <b>Type</b> <br />
   <div class="center">
     <canvas id="type" width="150" height="80"></canvas>
   </div>
   <br />
+  <b>Condition</b> <br />
   <div class="center">
     <canvas id="condition" width="150" height="80"></canvas>
   </div>
