@@ -151,9 +151,13 @@ var brand = new Chart(ctx, {
       },
       scales: {
             yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
+              scaleLabel: {
+                  display: true,
+                  labelString: 'Number of views'
+              },
+              ticks: {
+                  beginAtZero:true
+              }
             }]
       },
       title: {
