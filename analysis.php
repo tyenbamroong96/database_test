@@ -171,9 +171,9 @@ var brand = new Chart(ctx, {
       },
       title: {
             display: true,
-            text: 'User views based on brand',
             fontsize: 20,
-            fontStyle: 'bold'
+            fontStyle: 'bold',
+            text: 'User views based on brand'
       }
     }
 });
