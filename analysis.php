@@ -119,7 +119,7 @@ $usedcount = $row7['ucount'];
 var ctx = document.getElementById("brand").getContext('2d');
 var brand = new Chart(ctx, {
     type: 'bar',
-    data: {
+    data: [{
         labels: ["Rolex", "Casio", "Seiko"],
         datasets: [{
             label: 'Rolex',
@@ -153,75 +153,66 @@ var brand = new Chart(ctx, {
             ],
             borderWidth: 1
           }],
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
     }
 });
 // Type Analysis
-var ctx2 = document.getElementById("type").getContext('2d');
-var type = new Chart(ctx2, {
-    type: 'bar',
-    data: {
-        labels: ["Analog", "Digital"],
-        datasets: [{
-            label: ["Analog", "Digital"],
-            data: [<?php echo $analogcount; ?>, <?php echo $digitalcount; ?>],
-            backgroundColor: [
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)'
-            ],
-            borderColor: [
-                'rgba(75, 192, 192,1)',
-                'rgba(153, 102, 255, 1)'
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
-// Condition Analysis
-var ctx3 = document.getElementById("condition").getContext('2d');
-var condition = new Chart(ctx3, {
-    type: 'bar',
-    data: {
-        labels: ["New", "Used"],
-        datasets: [{
-            label: ["New", "Used"],
-            data: [<?php echo $newcount; ?>, <?php echo $usedcount; ?>],
-            backgroundColor: [
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-            ],
-            borderColor: [
-                'rgba(255, 159, 64, 1)',
-                'rgba(54, 162, 235, 1)',
-            ],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
-        }
-    }
-});
+// var ctx2 = document.getElementById("type").getContext('2d');
+// var type = new Chart(ctx2, {
+//     type: 'bar',
+//     data: {
+//         labels: ["Analog", "Digital"],
+//         datasets: [{
+//             label: ["Analog", "Digital"],
+//             data: [<?php echo $analogcount; ?>, <?php echo $digitalcount; ?>],
+//             backgroundColor: [
+//                 'rgba(75, 192, 192, 0.2)',
+//                 'rgba(153, 102, 255, 0.2)'
+//             ],
+//             borderColor: [
+//                 'rgba(75, 192, 192,1)',
+//                 'rgba(153, 102, 255, 1)'
+//             ],
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero:true
+//                 }
+//             }]
+//         }
+//     }
+// });
+// // Condition Analysis
+// var ctx3 = document.getElementById("condition").getContext('2d');
+// var condition = new Chart(ctx3, {
+//     type: 'bar',
+//     data: {
+//         labels: ["New", "Used"],
+//         datasets: [{
+//             label: ["New", "Used"],
+//             data: [<?php echo $newcount; ?>, <?php echo $usedcount; ?>],
+//             backgroundColor: [
+//                 'rgba(255, 159, 64, 0.2)',
+//                 'rgba(54, 162, 235, 0.2)',
+//             ],
+//             borderColor: [
+//                 'rgba(255, 159, 64, 1)',
+//                 'rgba(54, 162, 235, 1)',
+//             ],
+//             borderWidth: 1
+//         }]
+//     },
+//     options: {
+//         scales: {
+//             yAxes: [{
+//                 ticks: {
+//                     beginAtZero:true
+//                 }
+//             }]
+//         }
+//     }
+// });
 </script>
