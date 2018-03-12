@@ -1,4 +1,11 @@
 <?php
+
+/*
+                              WARNING!!!!!!!!!!!!!!!!!!!!
+INCLUDING THIS FILE MIGHT INCUR API COSTS BY USING AZURE ML WEB API.
+
+*/
+
 session_start();
 $connectionInfo = array("UID" => "auctora@auctora-server", "pwd" => "arotcua1!", "Database" => "auctoraDB");
 $serverName = "tcp:auctora-server.database.windows.net,1433";
@@ -11,7 +18,7 @@ $current_user_id = $_SESSION['userID'];
 
 $url = 'https://ussouthcentral.services.azureml.net/workspaces/45d13efe64304c83a3f2be965bc966ad/services/997d3d17b0db4dabb79aa441e12f848b/execute?api-version=2.0&format=swagger';
 
-$api_key = '2VlbDIQkxO3CyLQ6orryzB5IpIZg0dNgpTJpjtVJEOuc+m3yIB0H/AcnceE7HjhELCvP0FE4NmCHG9vUgaQAWA=='; 
+$api_key = '2VlbDIQkxO3CyLQ6orryzB5IpIZg0dNgpTJpjtVJEOuc+m3yIB0H/AcnceE7HjhELCvP0FE4NmCHG9vUgaQAWA==';
 
 // $query = "SELECT * FROM auction.product_searches";
 // $getMatches= sqlsrv_query($conn, $query);
@@ -32,38 +39,58 @@ $api_key = '2VlbDIQkxO3CyLQ6orryzB5IpIZg0dNgpTJpjtVJEOuc+m3yIB0H/AcnceE7HjhELCvP
 
 
 
-// $data = array(
-//     'Inputs'=> array(
-//         'input1'=> array(
-//              array('user_id' => (string)$current_user_id)
-//         ),
-//     ),
-//         'GlobalParameters' => null,
-// );
+$data = array(
+    'Inputs'=> array(
+        'input1'=> array(
+             array('user_id' => (string)$current_user_id)
+        ),
+    ),
+        'GlobalParameters' => null,
+);
 
-// $body = json_encode($data);
-// // echo $body;
+$body = json_encode($data);
+// echo $body;
 
-// $ch = curl_init();
-// curl_setopt($ch, CURLOPT_URL, $url);
-// curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: Bearer '.$api_key, 'Accept: application/json'));
-// curl_setopt($ch, CURLOPT_POST, 1);
-// curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+$ch = curl_init();
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: Bearer '.$api_key, 'Accept: application/json'));
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-// $response  = json_decode(curl_exec($ch), true);
-// // //echo 'Curl error: ' . curl_error($ch);
+$response  = json_decode(curl_exec($ch), true);
+// //echo 'Curl error: ' . curl_error($ch);
 $array_of_products = array();
-// // print_r($response['Results']['output1'][0]['Item 1']);
-// $my_array = $response;
-// $buffer_val = $my_array['Results']['output1'][0]['Item 1'];
+// print_r($response['Results']['output1'][0]['Item 1']);
+$my_array = $response;
+$buffer_val = $my_array['Results']['output1'][0]['Item 1'];
 
-// curl_close($ch);
-for ($x = 0; $x <= 4; $x++) {
+curl_close($ch);
+if (in_array("error", $response) or !$buffer_val) {
+    echo "Got error";
+    for ($x = 0; $x <= 4; $x++) {
     array_push($array_of_products, rand(5, 150));
-    } 
+    }
 
+}
+else
+{
+
+
+  // $val = $my_array['Results']['output1'][0]['Item 1'];
+  for($x=1; $x <= 5; $x++)
+  {
+    $buffer = $my_array['Results']['output1'][0]['Item ' . (string) $x];
+    // echo "> " . $buffer;
+    if($buffer)
+    {
+      array_push($array_of_products, (int) $buffer);
+    }
+  }
+
+  // print_r($response['Results']['output1'][0]['Item 1']);
+}
 
 // echo "here" . $array_of_products[0];
 
@@ -78,7 +105,7 @@ echo "
 <th>Image</th>
 <th>Title</th>
 <th>Price</th>
-<th>Service Cost</th>
+<th>Place bid</th>
 <th>ebayID</th>
 <th>Reviews</th>
 </tr>";
@@ -107,7 +134,9 @@ for($x=0; $x < count($array_of_products); $x++)
   echo "<td>" . "<a href=\"$product_link\"><img src=\"$img_src\"></a>" . "</td>";
   echo "<td>" . "<a href=\"$product_link\" target=\"_blank\">$title</a>" . "</td>";
   echo "<td>" . $row['price'] . "</td>";
-  echo "<td>" . $row['serviceCost'] . "</td>";
+  echo "<td>";
+  echo " <form method=\"POST\" action=\"bid.php\">  <button type=\"submit\" class=\"btn btn-success\" name=\"ebayID\" value=\"$ebayidval\" >Place bid</button></form>";
+  echo "</td>";
   echo "<td>" . $row['ebayID'] . "</td>";
   echo "<td>" ;
   echo "<form method=\"POST\" action=\"review_show.php\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"ebayIDShow\" value=\"$ebayidval\" >Show all Reviews</button></form>";
@@ -166,6 +195,9 @@ echo "</table>";
               <a class="nav-link js-scroll-trigger" href="ml.php">Home</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="chart.php">Analysis</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="my_watches.php">My Watches</a>
             </li>
             <li class="nav-item">
@@ -195,8 +227,3 @@ echo "</table>";
 </body>
 
 </html>
-
-
-
-
-

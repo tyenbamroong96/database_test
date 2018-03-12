@@ -1,11 +1,4 @@
 <?php
-
-/*
-                              WARNING!!!!!!!!!!!!!!!!!!!!
-INCLUDING THIS FILE MIGHT INCUR API COSTS BY USING AZURE ML WEB API.
-
-*/
-
 session_start();
 $connectionInfo = array("UID" => "auctora@auctora-server", "pwd" => "arotcua1!", "Database" => "auctoraDB");
 $serverName = "tcp:auctora-server.database.windows.net,1433";
@@ -39,58 +32,38 @@ $api_key = '2VlbDIQkxO3CyLQ6orryzB5IpIZg0dNgpTJpjtVJEOuc+m3yIB0H/AcnceE7HjhELCvP
 
 
 
-$data = array(
-    'Inputs'=> array(
-        'input1'=> array(
-             array('user_id' => (string)$current_user_id)
-        ),
-    ),
-        'GlobalParameters' => null,
-);
+// $data = array(
+//     'Inputs'=> array(
+//         'input1'=> array(
+//              array('user_id' => (string)$current_user_id)
+//         ),
+//     ),
+//         'GlobalParameters' => null,
+// );
 
-$body = json_encode($data);
-// echo $body;
+// $body = json_encode($data);
+// // echo $body;
 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $url);
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: Bearer '.$api_key, 'Accept: application/json'));
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+// $ch = curl_init();
+// curl_setopt($ch, CURLOPT_URL, $url);
+// curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: Bearer '.$api_key, 'Accept: application/json'));
+// curl_setopt($ch, CURLOPT_POST, 1);
+// curl_setopt($ch, CURLOPT_POSTFIELDS, $body);
+// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 
-$response  = json_decode(curl_exec($ch), true);
-// //echo 'Curl error: ' . curl_error($ch);
+// $response  = json_decode(curl_exec($ch), true);
+// // //echo 'Curl error: ' . curl_error($ch);
 $array_of_products = array();
-// print_r($response['Results']['output1'][0]['Item 1']);
-$my_array = $response;
-$buffer_val = $my_array['Results']['output1'][0]['Item 1'];
+// // print_r($response['Results']['output1'][0]['Item 1']);
+// $my_array = $response;
+// $buffer_val = $my_array['Results']['output1'][0]['Item 1'];
 
-curl_close($ch);
-if (in_array("error", $response) or !$buffer_val) {
-    echo "Got error";
-    for ($x = 0; $x <= 4; $x++) {
+// curl_close($ch);
+for ($x = 0; $x <= 4; $x++) {
     array_push($array_of_products, rand(5, 150));
     }
 
-}
-else
-{
-
-
-  // $val = $my_array['Results']['output1'][0]['Item 1'];
-  for($x=1; $x <= 5; $x++)
-  {
-    $buffer = $my_array['Results']['output1'][0]['Item ' . (string) $x];
-    // echo "> " . $buffer;
-    if($buffer)
-    {
-      array_push($array_of_products, (int) $buffer);
-    }
-  }
-
-  // print_r($response['Results']['output1'][0]['Item 1']);
-}
 
 // echo "here" . $array_of_products[0];
 

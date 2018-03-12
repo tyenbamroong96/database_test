@@ -191,6 +191,9 @@ if (isset($_POST['delete_item'])){
               <a class="nav-link js-scroll-trigger" href="ml.php">Home</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="chart.php">Analysis</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="my_watches.php">My Watches</a>
             </li>
             <li class="nav-item">

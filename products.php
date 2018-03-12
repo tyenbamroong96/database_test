@@ -4,6 +4,8 @@ $_SESSION['message'] = '';
 $connectionInfo = array("UID" => "auctora@auctora-server", "pwd" => "arotcua1!", "Database" => "auctoraDB");
 $serverName = "tcp:auctora-server.database.windows.net,1433";
 $conn = sqlsrv_connect($serverName, $connectionInfo);
+$value=1;
+$_SESSION['reviewBool'] = $value;
 
 // echo $_SESSION;
 
@@ -13,7 +15,7 @@ $conn = sqlsrv_connect($serverName, $connectionInfo);
 
 
 //Establishes the connection
-;
+
 
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -23,12 +25,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   if (isset($_POST['add_to_watchlist'])){
     // echo "WE ARE IN NOW";
     $my_ebay_id = $_POST['add_to_watchlist'];
+
+    $query = "SELECT * FROM auction.product_searches WHERE ebayID = '$my_ebay_id'";
+    $getMatches= sqlsrv_query($conn, $query);
+    $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
+    $product_id = $row['ID'];
+
+
     $query = "SELECT * FROM auction.product_searches WHERE ebayID = '$my_ebay_id'";
     $getMatches= sqlsrv_query($conn, $query);
     $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
 
-    $current_uid = $_SESSION['user_id'];
-    $query_to_avoid_watchlist_duplication = "SELECT * FROM auction.watch_list WHERE ebayID = '$my_ebay_id' AND user_id = '$current_uid'";
+    $current_uid = $_SESSION['userID'];
+    $query_to_avoid_watchlist_duplication = "SELECT * FROM auction.watch_list WHERE ebayID = '$product_id' AND user_id = '$current_uid'";
     $getMatches2= sqlsrv_query($conn, $query_to_avoid_watchlist_duplication);
     $row_2 = sqlsrv_fetch_array($getMatches2, SQLSRV_FETCH_ASSOC);
 
@@ -38,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       // echo "WE ARE IN";
 
       $tsql= "INSERT INTO auction.watch_list (ebayID, user_id) VALUES (?,?);";
-      $params = array($my_ebay_id, $_SESSION['user_id']);
+      $params = array($product_id, $_SESSION['userID']);
       $getResults= sqlsrv_query($conn, $tsql, $params);
       $rowsAffected = sqlsrv_rows_affected($getResults);
       if ($getResults == FALSE or $rowsAffected == FALSE)
@@ -122,9 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
       headers: {
         1: { sorter: false },  // col 0 = first = left most column - no sorting
         7: { sorter: false },
-        8: { sorter: false },
-        9: { sorter: 'text'},
-        10: { sorter: 'text'}   // specify text sorter, otherwise mistakenly takes shortDate parser
+        9: { sorter: false }
       }
     });
   });
@@ -147,8 +154,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
     // Display the result in the element with id="demo"
-    document.getElementById(id).innerHTML = days + "days " + hours + "hours "
-    + minutes + "minutes " + seconds + "seconds ";
+    document.getElementById(id).innerHTML = days + " days " + hours + " hours "
+    + minutes + " minutes " + seconds + " seconds ";
 
     // If the count down is finished, write some text
     if (distance < 0) {
@@ -177,6 +184,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="ml.php">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="chart.php">Analysis</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="my_watches.php">My Watches</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="watchlist.php">My Watchlist</a>
             </li>
 <li class="nav-item">
@@ -195,7 +211,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <link rel="stylesheet" href="./css/flora.all.css" type="text/css" media="screen" title="Flora (Default)">
 <?php
 $Query = $_POST["Query"];
-$GlobalID = $_POST["GlobalID"];
+//$GlobalID = $_POST["GlobalID"];
 // $BuyingFormat = $_POST["BuyingFormat"];
 $Display = $_POST["Display"];
 $Condition = $_POST["Condition"];
@@ -207,80 +223,57 @@ $Gender = $_POST["Gender"];
 <br>
 <br>
 <h1 align='center'>eBay Watch Search form</h1>
-<h4 style="color:red;" align='center'><span class="note">*</span> denotes mandatory</h4>
+<p align='center'> Select filters below to search for watches available on Auction. The result will be split into low, mid and high range products according to the pricing preference you select. </p>
+<h4 style="color:red;" align='center'><span class="note">*</span> All filter options must be selected.</h4>
 <form action="products.php" method="post">
 
 <table cellpadding="2" border="0" align="center">
   <tr>
-    <th>Shop by Brand <span class="note" style="color:red;">*</span></th>
-    <th>Country <span class="note" style="color:red;">*</span></th>
+    <th class="text-center" width="(100/6)%">Shop by Brand <span class="note" style="color:red;">*</span></th>
+    <!-- <th>Country <span class="note" style="color:red;">*</span></th> -->
     <!-- <th>Buying Format <span class="note" style="color:red;">*</span></th> -->
-    <th>Min Price <span class="note" style="color:red;">*</span></th>
-    <th>Max Price <span class="note" style="color:red;">*</span></th>
-    <!-- <th align="center">Debug</th> -->
+    <th class="text-center" width="(100/6)%">Min Price <span class="note" style="color:red;">*</span></th>
+    <th class="text-center" width="(100/6)%">Max Price <span class="note" style="color:red;">*</span></th>
+    <th class="text-center" width="(100/6)%">Display <span class="note" style="color:red;">*</span></th>
+    <th class="text-center" width="(100/6)%">Condition <span class="note" style="color:red;">*</span></th>
+    <th class="text-center" width="(100/6)%">Gender <span class="note" style="color:red;">*</span></th>
   </tr>
   <tr>
 
-    <td align="center">
+    <td align="center" width="(100/6)%">
     <select name="Query">
       <option value="Casio" <?php if (isset($Query) && $Query=="Casio") echo "selected";?>>Casio</option>
       <option value="Rolex" <?php if (isset($Query) && $Query=="Rolex") echo "selected";?>>Rolex</option>
       <option value="Seiko" <?php if (isset($Query) && $Query=="Seiko") echo "selected";?>>Seiko</option>
       </select>
     </td>
-    <td align="center">
-    <select name="GlobalID">
-      <option value="EBAY-GB"<?php if (isset($GlobalID) && $GlobalID=="EBAY-GB") echo "selected";?>>United Kingdom - EBAY-GB - GBP</option>
-      <option value="EBAY-US"<?php if (isset($GlobalID) && $GlobalID=="EBAY-US") echo "selected";?>>United States - EBAY-US - USD</option>
-      <!-- <option value="EBAY-AU">Australia - EBAY-AU - AUD</option> -->
-      <!-- <option value="EBAY-ENCA">Canada (English) - EBAY-ENCA - CAD</option> -->
-      <!-- <option value="EBAY-DE">Germany - EBAY-DE - EUR</option>
-      <option value="EBAY-GB">United Kingdom - EBAY-GB - GBP</option>
-      <option value="EBAY-US">United States - EBAY-US - USD</option> -->
-      </select>
-    </td>
 
-    <td align="center"><input type="text" name="MinPrice" value="<?php if (isset($_POST['MinPrice'])) echo $_POST['MinPrice']; ?>"></td>
-    <td align="center"><input type="text" name="MaxPrice" value="<?php if (isset($_POST['MaxPrice'])) echo $_POST['MaxPrice']; ?>"></td>
 
-    <!-- <td align="center">
-    <select name="Debug" >
-      <option value="1">true</option>
-      <option selected value="0">false</option>
-      </select>
-    </td> -->
+    <td align="center" width="(100/6)%"><input type="text" name="MinPrice" value="<?php if (isset($_POST['MinPrice'])) echo $_POST['MinPrice']; ?>"></td>
+    <td align="center" width="(100/6)%"><input type="text" name="MaxPrice" value="<?php if (isset($_POST['MaxPrice'])) echo $_POST['MaxPrice']; ?>"></td>
+    <td align="center" width="(100/6)%"> <select name="Display">
+
+          <option value="Analog" <?php if (isset($Display) && $Display=="Analog") echo "selected";?>>Analog</option>
+          <option value="Digital" <?php if (isset($Display) && $Display=="Digital") echo "selected";?>>Digital</option>
+          <option value="Analog & Digital" <?php if (isset($Display) && $Display=="Analog & Digital") echo "selected";?>>Analog & Digital</option>
+    </select></td>
+    <td align="center" width="(100/6)%"> <select name="Condition">
+          <option value="New" <?php if (isset($Condition) && $Condition=="New") echo "selected";?>>New</option>
+          <option value="Used" <?php if (isset($Condition) && $Condition=="Used") echo "selected";?>>Used</option>
+    </select></td>
+    <td align="center" width="(100/6)%"> <select name="Gender">
+          <option value="Men's" <?php if (isset($Gender) && $Gender=="Men's") echo "selected";?>>Men's</option>
+          <option value="Women's" <?php if (isset($Gender) && $Gender=="Women's") echo "selected";?>>Women's</option>
+          <option value="Unisex" <?php if (isset($Gender) && $Gender=="Unisex") echo "selected";?>>Unisex </option>
+          <option value="Children" <?php if (isset($Gender) && $Gender=="Children") echo "selected";?>>Children</option>
+    </select></td>
   </tr>
   <tr>
 
 
   </tr>
 </table>
-<table cellpadding="2" border="0" align="center">
-  <tr><th>Display</th>
-     <th>Condition</th>
-     <th>Gender</th>
-     <!-- <th>Year of Manufacture</th> -->
-  </tr>
-  <tr> <td align="center"> <select name="Display">
 
-        <option value="Analog" <?php if (isset($Display) && $Display=="Analog") echo "selected";?>>Analog</option>
-        <option value="Digital" <?php if (isset($Display) && $Display=="Digital") echo "selected";?>>Digital</option>
-        <option value="Analog & Digital" <?php if (isset($Display) && $Display=="Analog & Digital") echo "selected";?>>Analog & Digital</option>
-      </select></td>
-      <td align="center"> <select name="Condition">
-        <option value="New" <?php if (isset($Condition) && $Condition=="New") echo "selected";?>>New</option>
-        <option value="Used" <?php if (isset($Condition) && $Condition=="Used") echo "selected";?>>Used</option>
-      </select></td>
-      <td align="center"> <select name="Gender">
-        <option value="Men's" <?php if (isset($Gender) && $Gender=="Men's") echo "selected";?>>Men's</option>
-        <option value="Women's" <?php if (isset($Gender) && $Gender=="Women's") echo "selected";?>>Women's</option>
-        <option value="Unisex" <?php if (isset($Gender) && $Gender=="Unisex") echo "selected";?>>Unisex </option>
-        <option value="Children" <?php if (isset($Gender) && $Gender=="Children") echo "selected";?>>Children</option>
-      </select></td>
-
-
-    </tr>
-</table>
 
     <p align="center"> <INPUT type="submit" name="submit" value="Search" ></p>
 
@@ -292,7 +285,7 @@ $Gender = $_POST["Gender"];
 require_once('DisplayUtils.php');  // functions to aid with display of information
 error_reporting(E_ALL);  // turn on all errors, warnings and notices for easier debugging
 
-$results = '';
+//$results = '';
 
 //checking for non-empty and non-negative integer
 
@@ -306,7 +299,7 @@ if(isset($_POST['Query']))
   $brand = $_POST['Query'];
   $brand1 = (string)$brand;
 
-  $site  = $_POST['GlobalID'];
+  //$site  = $_POST['GlobalID'];
   //$format  = $_POST['BuyingFormat'];
   $disp  = $_POST['Display'];
   $cond  = $_POST['Condition'];
@@ -316,6 +309,7 @@ if(isset($_POST['Query']))
   $priceRangeMax = $_POST['MaxPrice'];
   $min = $_POST['MinPrice'];
   $max = $_POST['MaxPrice'];
+  $result_returned=0;
   if(!($max>0) || !($min>=0) ||!($max>$min) ) {
     $rest2 = die("Error: Please input valid price");
 }
@@ -326,28 +320,6 @@ if(isset($_POST['Query']))
   $rowB = sqlsrv_fetch_array($getMatchesB, SQLSRV_FETCH_ASSOC);
   if(!$rowB){*/
 
-    $current_uid = $_SESSION['user_id'];
-    $gend_for_filters = str_replace ("'s","",$gend);
-    $query = "SELECT * FROM auction.filters
-    WHERE brand = '$brand' AND min_price = '$min' AND max_price = '$max'
-    AND display ='$disp' AND condition = '$cond' AND gender = '$gend_for_filters' AND user_id = '$current_uid' ";
-    $getMatches= sqlsrv_query($conn, $query);
-
-    $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
-    // echo "HERE -> " . $row;
-
-    if(!$row){
-
-      $tsql2= "INSERT INTO auction.filters (brand, min_price, max_price, display, condition, gender, user_id) VALUES (?,?,?,?,?,?,?);";
-      $params2 = array($brand,$min,$max,$disp,$cond,$gend_for_filters,$current_uid);
-      $getResults2= sqlsrv_query($conn, $tsql2, $params2);
-      $rowsAffected2 = sqlsrv_rows_affected($getResults2);
-      if ($getResults2 == FALSE or $rowsAffected2 == FALSE){
-        die(FormatErrors(sqlsrv_errors()));
-      }
-
-
-    }
 
 
 
@@ -387,7 +359,7 @@ if(isset($_POST['Query']))
     // Construct the FindItems call
     $apicall = "$endpoint?OPERATION-NAME=findItemsAdvanced"
          . "&SERVICE-VERSION=1.0.0"
-         . "&GLOBAL-ID=$site"
+         . "&GLOBAL-ID=EBAY-GB"
          . "&SECURITY-APPNAME=PiusJude-Ragnarok-PRD-c5d80d3bd-40178424" //replace with your app id
          . "&keywords=$safeQuery"
          . "&paginationInput.entriesPerPage=$itemsPerRange"
@@ -428,22 +400,27 @@ if(isset($_POST['Query']))
          // Probably best to split into two different tests, but have as one for brevity
 
 
-           echo $rest->paginationOutput->totalEntries;
+
+
+           //echo $rest->paginationOutput->totalEntries;
            echo "</br>";
            $pageCount=(int)($rest->paginationOutput->totalEntries /$itemsPerRange)+1;
            //echo $pageCount;
            //echo "</br>";
            $results .= 'Total items : ' . $rest->paginationOutput->totalEntries . "<br />\n";
            $results .= '<table id="example" class="tablesorter" border="0" width="100%" cellpadding="0" cellspacing="1">' . "\n";
-           $results .= "<thead><tr><th>Count</th><th /><th>Product details</th><th>Seller Info </th><th>Price &nbsp; &nbsp; </th><th>Shipping &nbsp; &nbsp; </th><th>Total &nbsp; &nbsp; </th><th><!--Currency--></th><th>Time Left</th><th>Start Time</th><th>End Time</th><th>Number of views on this app</th></tr></thead>\n";
-           $count=1;
+           $results .= "<thead><tr><th>Count</th><th /><th>Product details</th><th>Seller Info </th><th>Price &nbsp; &nbsp; </th><th>Shipping &nbsp; &nbsp; </th><th>Total &nbsp; &nbsp; </th><th>Time Left</th><th>Number of views on this app</th><th></th></tr></thead>\n";
+           $countItems=1;
 
 
     if ($rest && $rest->paginationOutput->totalEntries > 0) {
+      if($result_returned==0){
+        $result_returned=1;
+      }
     for($pageNumber=1;$pageNumber<=$pageCount;$pageNumber++){
     $apicall = "$endpoint?OPERATION-NAME=findItemsAdvanced"
          . "&SERVICE-VERSION=1.0.0"
-         . "&GLOBAL-ID=$site"
+         . "&GLOBAL-ID=EBAY-GB"
          . "&SECURITY-APPNAME=PiusJude-Ragnarok-PRD-c5d80d3bd-40178424" //replace with your app id
          . "&keywords=$safeQuery"
          . "&paginationInput.entriesPerPage=$itemsPerRange"
@@ -511,7 +488,7 @@ if(isset($_POST['Query']))
           $conditionInfo = sprintf("A brand-new, unused, unworn and undamaged item in the original packaging (such as the original box or bag) and/or with the original tags attached.");
         }
         else if((string) $item->condition->conditionDisplayName == "New without tags"){
-            $conditionInfo = sprintf("A brand-new, unused and unworn item that is not in its original retail packaging or may be missing its original retail packaging materials (such as the original box or bag). The original tags may not be attached. For example, new shoes (with absolutely no signs of wear) that are no longer in their original box fall into this category.");
+            $conditionInfo = sprintf("A brand-new, unused and unworn item that is not in its original retail packaging or may be missing its original retail packaging materials (such as the original box or bag). The original tags may not be attached.");
         }
         else if((string) $item->condition->conditionDisplayName == "New with defects"){
             $conditionInfo = sprintf("A brand-new, unused and unworn item with some kind of defect.  Possible cosmetic imperfections range from natural colour variations to scuffs, cuts or nicks, and hanging threads or missing buttons that occasionally occur during the manufacturing or delivery process. Apparel may contain irregular or mismarked size tags.  Item may be missing its original retail packaging materials (such as original box or bag).  New factory seconds and/or new irregular items may fall into this category. The original tags may or may not be attached. See seller’s listing for full details and description of any imperfections.");
@@ -601,14 +578,14 @@ if(isset($_POST['Query']))
         //check for duplication
         $status_on_ebay = 'active';
         if(!$row){
-        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image, view_count, status) VALUES (?,?,?,?,?,?,?,?);";
+        $tsql= "INSERT INTO auction.product_searches (title, price, serviceCost, ebayID, product_link, image, view_count, status, brand, display, condition, gender) VALUES (?,?,?,?,?,?,?,?,?,?,?,?);";
         // $user_id = $_SESSION['user_id'];
-        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image,$viewcount,$status_on_ebay);
+        $params = array($sqlItemTitle,$sqlItemSellingStatus,$sqlItemShippingInfo,$sqlEbayItemID,$sqlLink,$image,$viewcount,$status_on_ebay,$brand,$disp,$cond,$gend);
         $getResults= sqlsrv_query($conn, $tsql, $params);
         $rowsAffected = sqlsrv_rows_affected($getResults);
         if ($getResults == FALSE or $rowsAffected == FALSE)
           {
-            echo $count;
+            echo $countItems;
             die(FormatErrors(sqlsrv_errors()));
           }
           else{
@@ -662,13 +639,12 @@ if(isset($_POST['Query']))
         //     echo '</br>';
         //   }
 
-
           // Free the connection
 
         //  @odbc_close($conn);
-        $results .= "<tr><td>$count</td><td><a href=\"$link\"><img src=\"$picURL\"></a></td><td> <a href=\"$link\">$title</a></br></br>     <button type=\"button\" class=\"btn btn-warning\" onclick=\"location.href = '$link';\">Buy/Bid</button> &nbsp;&nbsp;      <iframe name=\"votar\" style=\"display:none;\"></iframe>  <form id= \"add_to_watchlist\" target=\"votar\" method=\"post\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"add_to_watchlist\" onclick=\"return confirm('Want to add item?');\" value=\"$sqlEbayItemID\">Add to Watchlist</button></form>           </br></br>      $subtitle </br></br> $sellingState </br></br> $bids</br></br> $condition</br></br>$conditionInfo</br></br> </br> $ebayItemId</br></br> $display</br><td >$location</td>"
-             .  "<td>$price</td><td>$ship</td><td>$total</td><td>$curr</td><td><p id=\"$ident\"></p><script>countDown('".$ident."','".$endTime."')</script></td><td><nobr>$startTime</nobr></td><td><nobr>$endTime</nobr></td><td>$viewcount</td></tr>";
-            $count++;
+        $results .= "<tr><td>$countItems</td><td><a href=\"$link\"><img src=\"$picURL\"></a></td><td> <a href=\"$link\">$title</a></br> $subtitle </br></br> $sellingState </br></br> $bids</br></br> $condition</br></br>$conditionInfo</br></br> $ebayItemId</br></br> $display</br></br><td >$location</td>"
+             .  "<td>£$price</td><td>£$ship</td><td>£$total</td><td><p id=\"$ident\"></p><script>countDown('".$ident."','".$endTime."')</script></td><td>$viewcount</td><td> <form method=\"POST\" action=\"bid.php\">  <button type=\"submit\" class=\"btn btn-success\" name=\"ebayID\" value=\"$sqlEbayItemID\" >Place bid</button></form> &nbsp;&nbsp;  <iframe name=\"votar\" style=\"display:none;\"></iframe>  <form id= \"add_to_watchlist\" target=\"votar\" method=\"post\">  <button type=\"submit\" class=\"btn btn-success\" name=\"add_to_watchlist\" onclick=\"return confirm('Want to add item?');\" value=\"$sqlEbayItemID\">Add to Watchlist</button></form> &nbsp;&nbsp;   <form method=\"POST\" action=\"review.php\">  <button type=\"submit\" class=\"btn btn-danger\" name=\"ebayID\" value=\"$sqlEbayItemID\" >Add a Review</button></form> &nbsp;&nbsp; <form method=\"POST\" action=\"review_show.php\">  <button type=\"submit\" class=\"btn btn-warning\" name=\"ebayIDShow\" value=\"$sqlEbayItemID\" >Show all Reviews</button></form>  &nbsp;&nbsp; </td></tr>";
+            $countItems++;
             $ident++;
       }// each item
 
@@ -681,12 +657,55 @@ if(isset($_POST['Query']))
 }
   else {
     $results .= "<p> $range <i><b>No items found</b></i></p>". "<br />\n";
+
   }
     $results .= "</table>";
     $priceRangeMin = $priceRangeMax; // set up for next iteration
 
   } // foreach
       echo $results;
+      $result_returnA = $result_returned;
+      echo "</br>";
+      // echo "result ";
+      // echo $result_returnA;
+      $current_uid = $_SESSION['userID'];
+      $gend_for_filters = str_replace ("'s","",$gend);
+      $query = "SELECT * FROM auction.filters
+      WHERE brand = '$brand' AND min_price = '$min' AND max_price = '$max'
+      AND display ='$disp' AND condition = '$cond' AND gender = '$gend_for_filters' AND user_id = '$current_uid' ";
+      $getMatches= sqlsrv_query($conn, $query);
+
+      $row = sqlsrv_fetch_array($getMatches, SQLSRV_FETCH_ASSOC);
+      // echo "HERE -> " . $row;
+      if(!$row){
+        $filter_count=1;
+        $tsql2= "INSERT INTO auction.filters (brand, min_price, max_price, display, condition, gender, user_id, results, filter_count) VALUES (?,?,?,?,?,?,?,?,?);";
+        $params2 = array($brand,$min,$max,$disp,$cond,$gend_for_filters,$current_uid,$result_returnA,$filter_count);
+        $getResults2= sqlsrv_query($conn, $tsql2, $params2);
+        $rowsAffected2 = sqlsrv_rows_affected($getResults2);
+        if ($getResults2 == FALSE or $rowsAffected2 == FALSE){
+          die(FormatErrors(sqlsrv_errors()));
+        }
+
+
+      }
+      else{
+        $countings = $row['filter_count'];
+        $id = $row['ID'];
+      //  echo "id ";
+        //echo $id;
+        echo "</br>";
+        $filterviewcount = $countings + 1;
+        // echo $filterviewcount;
+        //echo "</br>";
+        $sql = "UPDATE auction.filters SET filter_count=$filterviewcount WHERE id=$id";
+        $getResultsD= sqlsrv_query($conn, $sql);
+        $rowsAffectedD = sqlsrv_rows_affected($getResultsD);
+        if ($getResultsD == FALSE or $rowsAffectedD == FALSE)
+            die(FormatErrors(sqlsrv_errors()));
+
+      }
+
       exit;
 } // if
 

@@ -34,6 +34,8 @@ if($num_of_rows > 0)
 
 echo "
 <br><br><br><br><br>
+<h3 align='center'>Watches that you won in auctions!</h3>
+
 <table border='1' align='center'>
 <tr>
 <th>Image</th>
@@ -166,6 +168,9 @@ else{
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="ml.php">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="chart.php">Analysis</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="#">My Watches</a>

@@ -25,7 +25,7 @@ function debug_to_console( $data ) {
 }
 
 if(isset($_POST['bid_placed']))
-{	
+{
 	// debug_to_console($prod_id);
 	// debug_to_console($current_uid);
 	$product_id = $_SESSION['productID'];
@@ -35,9 +35,9 @@ if(isset($_POST['bid_placed']))
     $num_of_rows = sqlsrv_num_rows($getMatches2);
     $value = $_POST['bid'];
     if($num_of_rows>0)
-    {	
+    {
     	$update_bid = "UPDATE auction.watch_list SET my_bid = '$value' WHERE ebayID = '$product_id' AND user_id = '$current_uid'";
-    	$getMatches2= sqlsrv_query($conn, $update_bid);    	
+    	$getMatches2= sqlsrv_query($conn, $update_bid);
 		// debug_to_console($value);
 		header("Location: watchlist.php");
 		exit;
@@ -56,6 +56,7 @@ if(isset($_POST['bid_placed']))
 echo "<br><br><br><br><br>";
 
 echo "<h1 align='center'>Place your bid</h1>";
+echo "<p align='center' style=\"color:red;\">*Placing a bid will automatically add this watch to your watchlist.</p>";
 echo "</br>";
 //ebayItem id from product_searches page
 
@@ -126,7 +127,7 @@ echo "</tr>";
 
     <script src="ckeditor/ckeditor.js"></script>
 
-    
+
 
   </head>
 
@@ -143,6 +144,9 @@ echo "</tr>";
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="ml.php">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="chart.php">Analysis</a>
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="my_watches.php">My Watches</a>
@@ -162,7 +166,7 @@ echo "</tr>";
     </nav>
 
     <div align='center'>
-    <form method="POST" action="bid.php">  
+    <form method="POST" action="bid.php">
 	  Your Bid:<br>
 	  <input type="number" name="bid"><br>
 	  <button type="submit" class="btn btn-danger" name="bid_placed" >Place bid</button>
