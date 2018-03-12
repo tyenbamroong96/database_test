@@ -116,33 +116,38 @@ $usedcount = $row7['ucount'];
 </body>
 <script>
 // Brand analysis
-var brand = {
-  type: 'line',
-  data: {
-    labels: ["January", "February", "March", "April", "May", "June", "July"],
-    datasets: [{
-      label: "My First dataset",
-      data: [65, 0, 80, 81, 56, 85, 40],
-      fill: false
-    }]
-  },
-  options: {
-    legend: {
-    	display: false
+var ctx3 = document.getElementById("condition").getContext('2d');
+var condition = new Chart(ctx3, {
+    type: 'bar',
+    data: {
+        labels: ["Rolex", "Casio", "Seiko"],
+        datasets: [{
+            label: ["New", "Used"],
+            data: [<?php echo $newcount; ?>, <?php echo $usedcount; ?>],
+            backgroundColor: [
+                'rgba(255, 159, 64, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+            ],
+            borderColor: [
+                'rgba(255, 159, 64, 1)',
+                'rgba(54, 162, 235, 1)',
+            ],
+            borderWidth: 1
+        }]
     },
-  	tooltips: {
-    	callbacks: {
-      	label: function(tooltipItem) {
-        console.log(tooltipItem)
-        	return tooltipItem.yLabel;
+    options: {
+    legend: {
+        display: false
+    },
+    tooltips: {
+        callbacks: {
+           label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+           }
         }
-      }
     }
   }
-};
-
-var ctx = document.getElementById("brand").getContext("2d");
-new Chart(ctx, brand);
+});
 
 // Type Analysis
 var ctx2 = document.getElementById("type").getContext('2d');
@@ -198,13 +203,16 @@ var condition = new Chart(ctx3, {
         }]
     },
     options: {
-        scales: {
-            yAxes: [{
-                ticks: {
-                    beginAtZero:true
-                }
-            }]
+    legend: {
+        display: false
+    },
+    tooltips: {
+        callbacks: {
+           label: function(tooltipItem) {
+                  return tooltipItem.yLabel;
+           }
         }
     }
+  }
 });
 </script>
