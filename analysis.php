@@ -103,18 +103,18 @@ $usedcount = $row7['ucount'];
 
   <!-- Display Chart -->
   <div class="center">
-    <div> <br />
+    <div>
       The bar chart below displays the numbers of user views of the three brands
       ;Rolex, Casino and Seiko.
-    </div>
-    <canvas id="brand" width="150" height="80"></canvas> <br />
+    </div><br />
+    <canvas id="brand" width="150" height="80"></canvas>
   </div>
   <br />
   <div class="center">
     <div>
       The bar chart below displays the numbers of user views by types
       ;Analog and Digital.
-    </div> <br />
+    </div><br />
     <canvas id="type" width="150" height="80"></canvas>
   </div>
   <br />
@@ -122,8 +122,8 @@ $usedcount = $row7['ucount'];
     <div>
       The bar chart below displays the numbers of user views by conditions
       ;New and Used.
-    </div> <br />
-    <canvas id="condition" width="150" height="80"></canvas> <br />
+    </div><br />
+    <canvas id="condition" width="150" height="80"></canvas>
   </div>
 </body>
 <script>
