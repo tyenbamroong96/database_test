@@ -165,6 +165,7 @@ var type = new Chart(ctx2, {
     data: {
         labels: ["Analog", "Digital"],
         datasets: [{
+            label: ,
             data: [<?php echo $analogcount; ?>, <?php echo $digitalcount; ?>],
             backgroundColor: [
                 'rgba(75, 192, 192, 0.2)',
