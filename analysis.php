@@ -80,7 +80,7 @@ $seikocount = $row3['skcount'];
   <div class="col-md-12" id="page-wrapper">
     <div class="col-md-2"></div>
     <div class="col-md-8">
-      <canvas id="myChart" width="450" height="50"></canvas>
+      <canvas id="myChart" width="1000" height="75"></canvas>
     </div>
     <div class="col-md-2"></div>
   </div>
