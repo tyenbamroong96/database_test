@@ -116,40 +116,34 @@ $usedcount = $row7['ucount'];
 </body>
 <script>
 // Brand analysis
-var ctx = document.getElementById("brand").getContext('2d');
 var brand = {
-			labels: ['Rolex', 'Casio', 'Seiko'],
-			datasets: [{
-				label: 'Rolex',
-				backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.red,
-				borderWidth: 1,
-				data: [
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor()
-				]
-			}, {
-				label: 'Dataset 2',
-				backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-				borderColor: window.chartColors.blue,
-				borderWidth: 1,
-				data: [
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor()
-				]
-			}]
+  type: 'line',
+  data: {
+    labels: ["January", "February", "March", "April", "May", "June", "July"],
+    datasets: [{
+      label: "My First dataset",
+      data: [65, 0, 80, 81, 56, 85, 40],
+      fill: false
+    }]
+  },
+  options: {
+    legend: {
+    	display: false
+    },
+  	tooltips: {
+    	callbacks: {
+      	label: function(tooltipItem) {
+        console.log(tooltipItem)
+        	return tooltipItem.yLabel;
+        }
+      }
+    }
+  }
+};
 
-		};
+var ctx = document.getElementById("brand").getContext("2d");
+new Chart(ctx, brand);
+
 // Type Analysis
 var ctx2 = document.getElementById("type").getContext('2d');
 var type = new Chart(ctx2, {
