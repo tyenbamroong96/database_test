@@ -138,17 +138,24 @@ var brand = new Chart(ctx, {
         }]
     },
     options: {
-    legend: {
-        display: false
-    },
-    tooltips: {
-        callbacks: {
-           label: function(tooltipItem) {
-                  return tooltipItem.yLabel;
-           }
-        }
+      legend: {
+          display: false
+      },
+      tooltips: {
+          callbacks: {
+             label: function(tooltipItem) {
+                    return tooltipItem.yLabel;
+             }
+          }
+      },
+      scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+      }
     }
-  }
 });
 
 // Type Analysis
@@ -172,17 +179,24 @@ var type = new Chart(ctx2, {
         }]
     },
     options: {
-    legend: {
-        display: false
-    },
-    tooltips: {
-        callbacks: {
-           label: function(tooltipItem) {
-                  return tooltipItem.yLabel;
-           }
-        }
+      legend: {
+          display: false
+      },
+      tooltips: {
+          callbacks: {
+             label: function(tooltipItem) {
+                    return tooltipItem.yLabel;
+             }
+          }
+      },
+      scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+      }
     }
-  }
 });
 // Condition Analysis
 var ctx3 = document.getElementById("condition").getContext('2d');
@@ -205,16 +219,23 @@ var condition = new Chart(ctx3, {
         }]
     },
     options: {
-    legend: {
-        display: false
-    },
-    tooltips: {
-        callbacks: {
-           label: function(tooltipItem) {
-                  return tooltipItem.yLabel;
-           }
-        }
+      legend: {
+          display: false
+      },
+      tooltips: {
+          callbacks: {
+             label: function(tooltipItem) {
+                    return tooltipItem.yLabel;
+             }
+          }
+      },
+      scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+      }
     }
-  }
 });
 </script>
