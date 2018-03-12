@@ -122,7 +122,7 @@ var brand = new Chart(ctx, {
     data: {
         labels: ["Rolex", "Casio", "Seiko"],
         datasets: [{
-            label: 'THE NUMBER OF VIEWS ON PRODUCT BRANDS',
+            label: ["Rolex", "Casio", "Seiko"],
             data: [<?php echo $rolexcount; ?>, <?php echo $casiocount; ?>, <?php echo $seikocount ?>],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
