@@ -162,7 +162,7 @@ var brand = new Chart(ctx, {
             xAxes: [{
               scaleLabel: {
                   display: true,
-                  labelString: 'Number of views'
+                  labelString: 'Brands'
               },
               ticks: {
                   beginAtZero:true
