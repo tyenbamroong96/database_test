@@ -171,7 +171,7 @@ var brand = new Chart(ctx, {
       },
       title: {
             display: true,
-            fontsize: 20,
+            fontSize: 20,
             fontStyle: 'bold',
             text: 'User views based on brand'
       }
