@@ -122,8 +122,8 @@ var brand = new Chart(ctx, {
     data: {
         datasets: [{
             data: [10, 20, 30]
-        }]
-        labels: ["Rolex", "Casio", "Seiko"],
+        }],
+        labels: ['Rolex', 'Casio', 'Seiko'],
     }
 });
 // Type Analysis
