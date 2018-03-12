@@ -16,18 +16,18 @@ $query7 = "SELECT SUM(usedcount) AS ucount FROM dbo.filtercounts";
 $getMatches1= sqlsrv_query($conn, $query1);
 $getMatches2= sqlsrv_query($conn, $query2);
 $getMatches3= sqlsrv_query($conn, $query3);
-$getMatches4= sqlsrv_query($conn, $query1);
-$getMatches5= sqlsrv_query($conn, $query2);
-$getMatches6= sqlsrv_query($conn, $query1);
-$getMatches7= sqlsrv_query($conn, $query2);
+$getMatches4= sqlsrv_query($conn, $query4);
+$getMatches5= sqlsrv_query($conn, $query5);
+$getMatches6= sqlsrv_query($conn, $query6);
+$getMatches7= sqlsrv_query($conn, $query7);
 
 $row1 = sqlsrv_fetch_array($getMatches1, SQLSRV_FETCH_ASSOC);
 $row2 = sqlsrv_fetch_array($getMatches2, SQLSRV_FETCH_ASSOC);
 $row3 = sqlsrv_fetch_array($getMatches3, SQLSRV_FETCH_ASSOC);
 $row4 = sqlsrv_fetch_array($getMatches4, SQLSRV_FETCH_ASSOC);
 $row5 = sqlsrv_fetch_array($getMatches5, SQLSRV_FETCH_ASSOC);
-$row6 = sqlsrv_fetch_array($getMatches1, SQLSRV_FETCH_ASSOC);
-$row7 = sqlsrv_fetch_array($getMatches2, SQLSRV_FETCH_ASSOC);
+$row6 = sqlsrv_fetch_array($getMatches6, SQLSRV_FETCH_ASSOC);
+$row7 = sqlsrv_fetch_array($getMatches7, SQLSRV_FETCH_ASSOC);
 
 $rolexcount = $row1['rlcount'];
 $casiocount = $row2['cacount'];
@@ -123,7 +123,7 @@ var brand = new Chart(ctx, {
         labels: ["Rolex", "Casio", "Seiko"],
         datasets: [{
             label: 'Number of views',
-            data: [<?php echo $analogcount; ?>, <?php echo $casiocount; ?>, <?php echo $seikocount ?>],
+            data: [<?php echo $rolexcount; ?>, <?php echo $casiocount; ?>, <?php echo $seikocount ?>],
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
